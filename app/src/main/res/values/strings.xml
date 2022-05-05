@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TFG_Application</string>
+    <string name="title_home">Home</string>
+    <string name="title_events">Events</string>
+    <string name="title_map">Map</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_chat">Chat</string>
+    <string name="string_probes">Proving</string>
+</resources>
