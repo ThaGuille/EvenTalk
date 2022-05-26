@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+
 import com.example.tfg_application.databinding.FragmentNotificationsBinding;
 
 public class NotificationsFragment extends Fragment {

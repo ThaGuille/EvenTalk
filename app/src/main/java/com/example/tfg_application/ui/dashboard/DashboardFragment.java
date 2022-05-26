@@ -73,25 +73,7 @@ public class DashboardFragment extends Fragment {
 
         EditText buscador = binding.textSearchEvents;
         EventsRequester eventsRequester = new EventsRequester();
-        /*RequestQueue queue = Volley.newRequestQueue(this.getContext());
-        String url = "https://app.ticketmaster.com/discovery/v2/events.json?attractionId=K8vZ917Gku7&countryCode=CA&apikey=";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url + getResources().getString(R.string.ticketmaster_api).toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    Log.i("RESPUESTA", response);
-                    //llamar metodo con el resultado
-                }
-                catch(Exception e){
-                    Log.i("EXCEPTION", e.getMessage());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("ERROR", error.toString());
-            }
-        });*/
+        
 
         buscador.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

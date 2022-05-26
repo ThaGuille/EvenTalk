@@ -11,15 +11,16 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 
-import com.android.volley.Request;
+/*revisar import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.FusedLocationProviderClient;*/
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -29,14 +30,21 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.tfg_application.databinding.ActivityMainBinding;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private FusedLocationProviderClient mFusedLocationClient;
+    //revisar private FusedLocationProviderClient mFusedLocationClient;
     private String mLatitudeLabel;
     private String mLongitudeLabel;
+    private FirebaseDatabase db;
+    //private MessageAdapter adapter;
+    //private ActivityResultContracts.OpenDocument openDocument; comentat fins posar immatges
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser == null) {
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -58,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
         /*Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();*/
+
+
+    }
+
+    public void finishActivity(){
+        finish();
     }
 
     /*@Override

@@ -11,7 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import ch.hsr.geohash.GeoHash;
+//import ch.hsr.geohash.GeoHash;
 
 import com.example.tfg_application.BuildConfig;
 import com.example.tfg_application.R;
@@ -36,6 +36,7 @@ public class EventsRequester extends Activity {
 
     */
     //private GeoHash geoHash;
+
     private RequestQueue queue;
     private StringRequest stringRequest;
 
@@ -43,7 +44,7 @@ public class EventsRequester extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String url = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";
-        Log.i("FULL URL", BuildConfig.ticketmaster_api);
+        //Log.i("FULL URL", BuildConfig.ticketmaster_api);
         queue = Volley.newRequestQueue(this);
         stringRequest = new StringRequest(Request.Method.GET, url + BuildConfig.ticketmaster_api, new Response.Listener<String>() {
             @Override
@@ -62,6 +63,13 @@ public class EventsRequester extends Activity {
                 Log.e("ERROR", error.toString());
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
     }
 
     public void getEvent(String query){
