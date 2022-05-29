@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 /*revisar import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -30,6 +32,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.tfg_application.databinding.ActivityMainBinding;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private String mLatitudeLabel;
     private String mLongitudeLabel;
     private FirebaseDatabase db;
+    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 99;
     //private MessageAdapter adapter;
     //private ActivityResultContracts.OpenDocument openDocument; comentat fins posar immatges
 
@@ -71,30 +75,41 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        LocationManager lm = (LocationManager)getSystemService(this.LOCATION_SERVICE);
+        //Això sol s'active si l'usuari decline el permís d'ubicació
+        /*if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)){
+            Toast.makeText(this, "Location", Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(android.R.id.content), "El permiso de ubicación es necesario para el correcto funcionamiento de la aplicación", Snackbar.LENGTH_LONG)
+                    .setAction("Give permission", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startLocationPermissionRequest();
+                        }
+                    });
+        }else{
+            startLocationPermissionRequest();
+        }*/
+        //LocationManager lm = (LocationManager)getSystemService(this.LOCATION_SERVICE);
         /*Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();*/
-
-
     }
 
-    public void finishActivity(){
-        finish();
-    }
 
-    /*@Override
+    /*Override
+    public void onRequestPermissionResult()*/
+
+
+    @Override
     protected void onStart(){
         super.onStart();
-
         if (!checkPermissions()) {
             requestPermissions();
         } else {
-            getLastLocation();
+            //getLastLocation();
         }
     }
 
-    private void getLastLocation() {
+    /*private void getLastLocation() {
         mFusedLocationClient.getLastLocation()
                 .addOnCompleteListener(this, new OnCompleteListener<Location>() {
                     @Override
@@ -114,18 +129,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
+    }*/
 
     private boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
         return permissionState == PackageManager.PERMISSION_GRANTED;
     }
-    private void startLocationPermissionRequest() {
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                REQUEST_PERMISSIONS_REQUEST_CODE);
-    }
+
 
     private void requestPermissions() {
         boolean shouldProvideRationale =
@@ -135,10 +146,9 @@ public class MainActivity extends AppCompatActivity {
         // Provide an additional rationale to the user. This would happen if the user denied the
         // request previously, but didn't check the "Don't ask again" checkbox.
         if (shouldProvideRationale) {
-            Log.i(TAG, "Displaying permission rationale to provide additional context.");
-
-            showSnackbar(R.string.permission_rationale, android.R.string.ok,
-                    new View.OnClickListener() {
+            Log.i("permission", "Displaying permission rationale to provide additional context.");
+            Snackbar.make(findViewById(android.R.id.content), "El permiso de ubicación es necesario para el correcto funcionamiento de la aplicación", Snackbar.LENGTH_LONG)
+                    .setAction("Give permission", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             // Request permission
@@ -147,25 +157,33 @@ public class MainActivity extends AppCompatActivity {
                     });
 
         } else {
-            Log.i(TAG, "Requesting permission");
+            Log.i("permission", "Requesting permission");
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
             startLocationPermissionRequest();
         }
     }
+
+    private void startLocationPermissionRequest() {
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        Log.i(TAG, "onRequestPermissionResult");
+        super.onRequestPermissionsResult(requestCode,permissions, grantResults);
+        Log.i("permission", "onRequestPermissionResult");
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
-                Log.i(TAG, "User interaction was cancelled.");
+                Log.i("permission", "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted.
-                getLastLocation();
+                //getLastLocation();
             } else {
                 // Permission denied.
 
@@ -178,8 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 // again" prompts). Therefore, a user interface affordance is typically implemented
                 // when permissions are denied. Otherwise, your app could appear unresponsive to
                 // touches or interactions which have required permissions.
-                showSnackbar(R.string.permission_denied_explanation, R.string.settings,
-                        new View.OnClickListener() {
+                Snackbar.make(findViewById(android.R.id.content), "El permiso no se ha otorgado correctamente", Snackbar.LENGTH_LONG)
+                        .setAction("Give permission", new View.OnClickListener() {
+                //showSnackbar(R.string.permission_denied_explanation, R.string.settings,
                             @Override
                             public void onClick(View view) {
                                 // Build intent that displays the App settings screen.
@@ -195,5 +214,6 @@ public class MainActivity extends AppCompatActivity {
                         });
             }
         }
-    }*/
+    }
+
 }

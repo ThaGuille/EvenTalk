@@ -158,7 +158,7 @@
 
     </LinearLayout>
 
-    <!-- Aqui aniran els events extrets de la API-->
+    <!-- Aqui aniran els events extrets de la API
     <ListView
         android:id="@+id/listView_events"
         android:layout_width="match_parent"
@@ -168,7 +168,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </ListView>
+    </ListView>-->
 
 
 

@@ -27,8 +27,13 @@ android {
 
     buildTypes {
         debug{
-            //resValue("string", "ticketmaster_api",localProperties['ticketmasterKey'])
+            //resValue("string", "maps_api",localProperties['mapsKey'])
             buildConfigField("String", "ticketmaster_api", "\"" + localProperties['ticketmasterKey'] + "\"")
+            //buildConfigField("String", "maps_api", "\"" + localProperties['mapsKey'] + "\"")
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            manifestPlaceholders = [MAPS_API_KEY: "${properties.getProperty('MAPS_API_KEY')}"]
+
         }
         release {
             minifyEnabled false
@@ -57,14 +62,16 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
-    implementation 'com.android.volley:volley:1.2.1'
+
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.6.0'
+
     // Google
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
@@ -81,8 +88,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'
 
-    //implementation 'ch.hsr:geohash:1.4.0'
-    //implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'ch.hsr:geohash:1.4.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
     //implementation 'com.android.tools.build:gradle:7.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4-alpha06'

@@ -50,10 +50,9 @@ class ChatFragment : Fragment(){
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.i("hola2", "hola2");
-        val chatViewModel = ViewModelProvider(this).get(
+        /*val chatViewModel = ViewModelProvider(this).get(
             ChatViewModel::class.java
-        )
+        )*/
         binding = FragmentChatBinding.inflate(inflater, container, false)
         auth = Firebase.auth
 

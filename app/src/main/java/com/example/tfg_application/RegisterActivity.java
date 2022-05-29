@@ -17,11 +17,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private Button btnRegister;
+    private Button btnVerifyEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
             finish();
             return;
         }
-        Button btnRegister = findViewById(R.id.btnRegister);
+        btnRegister = findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,6 +50,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 switchToLogin();
+            }
+        });
+        btnVerifyEmail = findViewById(R.id.btnVerifyEmail);
+        btnVerifyEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                verifyEmail();
             }
         });
     }
@@ -77,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password)
+         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -88,7 +99,29 @@ public class RegisterActivity extends AppCompatActivity {
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    showMainActivity();
+
+                                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(firstName)
+                                            //aquí es podrà guardar la foto de l'usuari en un futur
+                                            //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                                            .build();
+
+                                    firebaseUser.updateProfile(profileUpdates)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d("User", "User profile updated.");
+                                                    }
+                                                }
+                                            });
+                                    firebaseUser.updateEmail(email);
+                                    btnRegister.setVisibility(View.GONE);
+                                    btnVerifyEmail.setVisibility(View.VISIBLE);
+                                    //verifyEmail();
+
+                                    //showMainActivity();
                                 }
                             });
                         } else {
@@ -98,6 +131,36 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void verifyEmail(){
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.reload();
+        if(user!=null) {
+            user.sendEmailVerification()
+                    .addOnCompleteListener(this, new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            // Re-enable button
+                            showMainActivity();
+
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this,
+                                        "Verification email sent to " + user.getEmail(),
+                                        Toast.LENGTH_SHORT).show();
+                                Log.i("email", "Verification email sent to " + user.getEmail());
+                            } else {
+                                Log.e("email", "sendEmailVerification", task.getException());
+                                Toast.makeText(RegisterActivity.this,
+                                        "Failed to send verification email.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }else{
+            Log.i("email", " user not registered properly ");
+        }
+    }
+
     private void showMainActivity() {
         Log.i("registerToMainActivity", "registerToMainActivity");
         Intent intent = new Intent(this, MainActivity.class);

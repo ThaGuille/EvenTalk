@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.196" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3675" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/edit_text_shadow.xml" value="0.196" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.196" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/ic_baseline_chat_24.xml" value="0.3675" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/ic_baseline_horizontal_line_24.xml" value="0.3675" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/ic_baseline_logout_24.xml" value="0.3675" />
@@ -12,11 +15,17 @@
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.3675" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3675" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.3675" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/outline_add_photo_alternate_24.xml" value="0.196" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/outline_send_24.xml" value="0.196" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/outline_send_gray_24.xml" value="0.196" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/rounded_message_blue.xml" value="0.196" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/rounded_message_gray.xml" value="0.3065" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/activity_configuration.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/activity_main.xml" value="0.3482789855072464" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/activity_register.xml" value="0.17831813576494426" />
-        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/activity_sign_in.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/fragment_chat.xml" value="0.25" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/fragment_configuration.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/layout/fragment_notifications.xml" value="0.3482789855072464" />
@@ -26,6 +35,7 @@
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/mipmap-anydpi-v26/chat_icon.xml" value="0.3675" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/mipmap-anydpi-v26/chat_icon_round.xml" value="0.3675" />
+        <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.318" />
       </map>
     </option>
   </component>

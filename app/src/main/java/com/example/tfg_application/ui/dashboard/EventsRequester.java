@@ -1,9 +1,15 @@
 package com.example.tfg_application.ui.dashboard;
 
 import android.app.Activity;
+import android.app.IntentService;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,7 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.tfg_application.BuildConfig;
 import com.example.tfg_application.R;
 
-public class EventsRequester extends Activity {
+public class EventsRequester {
 
     /*Aquí s'ha de passar tot el codi per fer les peticions a la api, així com el sistema de filtres
     i classificació que segueixin les querys
@@ -37,21 +43,27 @@ public class EventsRequester extends Activity {
     */
     //private GeoHash geoHash;
 
-    private RequestQueue queue;
-    private StringRequest stringRequest;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void getEvent(String query, Context context, Location location, TextView viewTempoText){
+        Log.i("events", "EventsRequester location " + location);
+        RequestQueue queue = Volley.newRequestQueue(context);
+        //La url es cree a partir de la query passada
+        Log.i("getEvent()", "getEvent()");
+        if(queue==null){
+            Log.i("query", "quede is null");
+        }
+
         String url = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";
-        //Log.i("FULL URL", BuildConfig.ticketmaster_api);
-        queue = Volley.newRequestQueue(this);
-        stringRequest = new StringRequest(Request.Method.GET, url + BuildConfig.ticketmaster_api, new Response.Listener<String>() {
+
+        String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?latlong="+location.getLatitude()+","+location.getLongitude()+ "&radius=60&size=10&apikey=";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlLocation + BuildConfig.ticketmaster_api, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     Log.i("RESPUESTA", response);
                     //llamar metodo con el resultado
+                    viewTempoText.setText(response);
                 }
                 catch(Exception e){
                     Log.i("EXCEPTION", e.getMessage());
@@ -63,18 +75,10 @@ public class EventsRequester extends Activity {
                 Log.e("ERROR", error.toString());
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-    }
-
-    public void getEvent(String query){
-        //La url es cree a partir de la query passada
-        Log.i("getEvent()", "getEvent()");
+        if(stringRequest==null){
+            Log.i("query", "stringReq is null");
+        }
         queue.add(stringRequest);
     }
+
 }

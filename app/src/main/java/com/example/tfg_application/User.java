@@ -1,8 +1,8 @@
 package com.example.tfg_application;
 
-public class User {
+public class User{
     public String firstName;
-    public String nickName;
+    private String nickName;
     public String email;
 
     public User() {
@@ -12,5 +12,9 @@ public class User {
         this.firstName = firstName;
         this.nickName = nickName;
         this.email = email;
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 }
