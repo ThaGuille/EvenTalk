@@ -69,7 +69,6 @@ public class Configuration extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                         signOut();
                     }
                 });

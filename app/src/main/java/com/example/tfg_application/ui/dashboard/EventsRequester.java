@@ -47,16 +47,16 @@ public class EventsRequester {
     public void getEvent(String query, Context context, Location location, TextView viewTempoText){
         Log.i("events", "EventsRequester location " + location);
         RequestQueue queue = Volley.newRequestQueue(context);
+
         //La url es cree a partir de la query passada
-        Log.i("getEvent()", "getEvent()");
         if(queue==null){
-            Log.i("query", "quede is null");
+            Log.i("query", "queue is null");
         }
 
         String url = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";
 
+        //query a la api de ticketmaster, com no estan fets els filtres se'n fa una predeterminada amb la ubicacio de l'usuari
         String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?latlong="+location.getLatitude()+","+location.getLongitude()+ "&radius=60&size=10&apikey=";
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlLocation + BuildConfig.ticketmaster_api, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -75,9 +75,6 @@ public class EventsRequester {
                 Log.e("ERROR", error.toString());
             }
         });
-        if(stringRequest==null){
-            Log.i("query", "stringReq is null");
-        }
         queue.add(stringRequest);
     }
 

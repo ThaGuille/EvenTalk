@@ -99,7 +99,8 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        //Sistema de queries a la API
+
+        //Sistema de queries a la API. Cambiarà bastant un cop s'apliquin els filtres així que de moment està bé així
 
         EditText buscador = binding.textSearchEvents;
         buscador.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -108,6 +109,8 @@ public class DashboardFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     // Your piece of code on keyboard search click
                     Log.i("SEARCH", "BUSCANDOOOO");
+
+                    //Per si ho volgues realitzar amb IntentService, pero no té pinta que sigui rentable
                     /*Intent intent = new Intent(getActivity(), EventsRequester.class);
                     intent.setClassName("com.example.tfg_application.ui.dashboard", "com.example.tfg_application.ui.dashboard.EventsRequester");
                     getActivity().startService(intent);*/
@@ -117,6 +120,7 @@ public class DashboardFragment extends Fragment {
                     lastLocation();
                     Context context = getContext();
                     Object o = (Object) this;
+                    //I això es farà amb aquest mètode, però de moment per fer probes no cal (pero ja funciona)
                     //locationActivity.lastLocation(o, getClass(), "getLocation");
                     Log.i("events", "proba1" + mLastLocation);
                     //eventsRequester.getEvent(buscador.getText().toString(), context, mLastLocation);
@@ -138,6 +142,7 @@ public class DashboardFragment extends Fragment {
         eventsRequester.getEvent(buscador.getText().toString(), getContext(), mLastLocation, textoTemporal);
     }
 
+    //Això s'ha d'eliminar i substituir pel mètode de LocationActivity
     private void lastLocation() {
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
