@@ -34,11 +34,9 @@ public class LocationActivity {
     }
 
     public void lastLocation(Object o,Class classe, String method) {
-        Log.i("location", "getting last location2");
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Log.i("location", "getting last location");
         mFusedLocationProviderClient.getLastLocation()
                 .addOnCompleteListener(mActivity, new OnCompleteListener<Location>() {
                     @Override
@@ -50,7 +48,7 @@ public class LocationActivity {
                             Log.i("location", "LocationActivity query:"+ mLastLocation.toString());
                             //return mLastLocation;
                             try {
-                                Log.i("location", "almenos hace el try");
+                                Log.i("location", "nom classe: " + classe.getName());
                                 Class [] c = new Class[1];
                                 c[0] = Location.class;
                                 Method method1 = classe.getMethod(method, c);

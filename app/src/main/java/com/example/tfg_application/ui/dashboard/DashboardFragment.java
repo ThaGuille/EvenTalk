@@ -56,6 +56,7 @@ public class DashboardFragment extends Fragment {
     private Location mLastLocation;
     private LocationActivity locationActivity;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private String proba1, proba2;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +76,6 @@ public class DashboardFragment extends Fragment {
         //locationManager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
         //.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
 
         final View popular = binding.orderByPopular;
         popular.setOnClickListener(new View.OnClickListener() {
@@ -108,20 +108,25 @@ public class DashboardFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     // Your piece of code on keyboard search click
-                    Log.i("SEARCH", "BUSCANDOOOO");
+                    Log.i("events", "BUSCANDOOOO");
 
                     //Per si ho volgues realitzar amb IntentService, pero no té pinta que sigui rentable
                     /*Intent intent = new Intent(getActivity(), EventsRequester.class);
                     intent.setClassName("com.example.tfg_application.ui.dashboard", "com.example.tfg_application.ui.dashboard.EventsRequester");
                     getActivity().startService(intent);*/
-                    Log.i("Autostart", "started");
+                    Log.i("events", "started");
 
                     //Aquí es passarà la query ya filtrada o s'anirà a un altre mètode que la filtri o algo, no es passe el text a lo bruto
-                    lastLocation();
+                    //lastLocation();
                     Context context = getContext();
-                    Object o = (Object) this;
+                    //Apuntar com s'ha fet aixo per a que funcioni: antic codi
+                    //Object o = (Object) this;
+                    //locationActivity.lastLocation(o, getclass(), "getLocation");
+                    //pero aixo retornava la classe com...DashboardFragment$4. S'ha hagut d'agafar la referencia a la classe i al objecte per a que funcioni
+                    Object o2 = (Object)  DashboardFragment.this;
+                    proba1 = "valor1";
                     //I això es farà amb aquest mètode, però de moment per fer probes no cal (pero ja funciona)
-                    //locationActivity.lastLocation(o, getClass(), "getLocation");
+                    locationActivity.lastLocation(o2, DashboardFragment.class, "getLocation");
                     Log.i("events", "proba1" + mLastLocation);
                     //eventsRequester.getEvent(buscador.getText().toString(), context, mLastLocation);
                     return true;
@@ -134,10 +139,13 @@ public class DashboardFragment extends Fragment {
     }
 
     public void getLocation(Location location){
+        //-------Revisar: sa de passar latLong a geoHash ------------------
+        //String geoHash = GeoHash.encodeGeohash(lat, lon, 8);
         mLastLocation = location;
         LatLng ltlg = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         EditText buscador = binding.textSearchEvents;
         Log.i("events", "al getLocation" + mLastLocation);
+        Log.i("location", "valor proba 1: " + proba1);
         TextView textoTemporal = binding.textDashboard;
         eventsRequester.getEvent(buscador.getText().toString(), getContext(), mLastLocation, textoTemporal);
     }

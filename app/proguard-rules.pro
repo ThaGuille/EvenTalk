@@ -11,7 +11,10 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-
+-keepnames class com.example.tfg_application.ui.dashboard.DashboardFragment{
+ *;
+}
+-dontobfuscate
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
 #-keepattributes SourceFile,LineNumberTable

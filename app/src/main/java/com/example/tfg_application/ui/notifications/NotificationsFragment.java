@@ -66,7 +66,8 @@ public class NotificationsFragment extends Fragment implements OnMapReadyCallbac
                 markerOptions.title(latLng.latitude + " : " + latLng.longitude);
                 googleMap.clear();
                 //make zoom
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                //googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng);
                 //add red market
                 googleMap.addMarker(markerOptions);
             }
