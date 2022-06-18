@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:id="@+id/eventTextDate"
+        android:layout_width="wrap_content"
+        android:maxWidth="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:paddingHorizontal="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toEndOf="@id/eventImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Twe, 20 jun · 11:30 pm" />
+
+    <TextView
+        android:id="@+id/eventTextName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="@id/eventTextDate"
+        app:layout_constraintTop_toBottomOf="@id/eventTextDate"
+        tools:text="Dirty martes en La Boite" />
+    <TextView
+        android:id="@+id/eventTextAdress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        app:layout_constraintStart_toStartOf="@id/eventTextName"
+        app:layout_constraintTop_toBottomOf="@id/eventTextName"
+        tools:text="C/ Sant Antoni nº15" />
+    <ImageButton
+        android:id="@+id/eventButtonChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_chat_24"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/eventTextDate"
+       />
+    <ImageButton
+        android:id="@+id/eventButtonMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_map_24"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventButtonChat"
+        />
+    <ImageButton
+        android:id="@+id/eventButtonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_favorite_24"
+        android:background="@color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eventButtonMap"
+        />
+
+
+    <ImageView
+        android:id="@+id/eventImageView"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/ic_baseline_no_photography_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/eventTextDate"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/stat_notify_chat"
+        tools:layout_editor_absoluteX="334dp"
+        tools:layout_editor_absoluteY="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

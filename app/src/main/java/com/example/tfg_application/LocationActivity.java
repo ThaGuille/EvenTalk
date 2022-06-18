@@ -37,10 +37,12 @@ public class LocationActivity {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        Log.i("location", "Starting to get location");
         mFusedLocationProviderClient.getLastLocation()
                 .addOnCompleteListener(mActivity, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
+                        Log.i("location", "location onComplete");
                         if (task.isSuccessful() && task.getResult() != null) {
                             mLastLocation = task.getResult();
                             /*Log.i("location", String.format(Locale.ENGLISH, "%s: %f", mLastLocation.getLatitude()));

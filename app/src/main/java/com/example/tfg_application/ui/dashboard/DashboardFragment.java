@@ -26,6 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,6 +39,7 @@ import com.example.tfg_application.LocationActivity;
 import com.example.tfg_application.R;
 import com.example.tfg_application.SignInActivity;
 import com.example.tfg_application.databinding.FragmentDashboardBinding;
+import com.example.tfg_application.ui.dashboard.model.Event;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,6 +48,9 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
@@ -56,7 +62,9 @@ public class DashboardFragment extends Fragment {
     private Location mLastLocation;
     private LocationActivity locationActivity;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private String proba1, proba2;
+    private RecyclerView recyclerView;
+    private static EventAdapter adapter;
+    private static List<Event> mEventList = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +73,13 @@ public class DashboardFragment extends Fragment {
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        //RecyclerView binding
+        recyclerView = binding.eventRecyclerView;
+
+        adapter = new EventAdapter(mEventList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         final TextView textView = binding.textDashboard;
         param1 = (LinearLayout.LayoutParams) binding.underline1.getLayoutParams();
@@ -124,7 +139,6 @@ public class DashboardFragment extends Fragment {
                     //locationActivity.lastLocation(o, getclass(), "getLocation");
                     //pero aixo retornava la classe com...DashboardFragment$4. S'ha hagut d'agafar la referencia a la classe i al objecte per a que funcioni
                     Object o2 = (Object)  DashboardFragment.this;
-                    proba1 = "valor1";
                     //I això es farà amb aquest mètode, però de moment per fer probes no cal (pero ja funciona)
                     locationActivity.lastLocation(o2, DashboardFragment.class, "getLocation");
                     Log.i("events", "proba1" + mLastLocation);
@@ -145,7 +159,6 @@ public class DashboardFragment extends Fragment {
         LatLng ltlg = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         EditText buscador = binding.textSearchEvents;
         Log.i("events", "al getLocation" + mLastLocation);
-        Log.i("location", "valor proba 1: " + proba1);
         TextView textoTemporal = binding.textDashboard;
         eventsRequester.getEvent(buscador.getText().toString(), getContext(), mLastLocation, textoTemporal);
     }
@@ -189,6 +202,16 @@ public class DashboardFragment extends Fragment {
         binding.underline2.setLayoutParams(param2);
         binding.underline3.setLayoutParams(param2);
         v.setLayoutParams(param1);
+    }
+
+    //Enlloc de tantes coses estatiquees tmb es podrie fer adapter.registerAdapterDataObserver(classe(adapter, eventsRequester))
+    //I en aquella classe fer les operacions, agafant els events de la propia classe eventsRequester
+    public static void changeEvents(Event[] events){
+        Log.i("events", "changing Events");
+        List<Event> eventList = Arrays.asList(events);
+        mEventList.clear();
+        mEventList.addAll(eventList);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

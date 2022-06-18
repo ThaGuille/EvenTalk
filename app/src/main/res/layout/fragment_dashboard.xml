@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,44 +25,20 @@
     autocompletar manualment (ciuatats i events)
     -->
 
-
     <!-- T'obliguen a posar el botó dins de una
      layout i poser un paràmetre anomenat
      android:layout_alignParentRight="true" per poder posar
      un botó en una posicio...
 -->
-    <RelativeLayout
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.977"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="1dp"
-            android:background="@color/transparent"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_baseline_filter_alt_24"
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </RelativeLayout>
 
     <EditText
         android:id="@+id/text_search_events"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="3dp"
+        android:layout_below="@id/text_ubication"
         android:layout_marginEnd="8dp"
         android:textSize="20sp"
         android:focusableInTouchMode="true"
@@ -71,17 +47,30 @@
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:editable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        />
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="48dp"
+        android:background="@color/transparent"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:layout_alignBottom="@+id/text_search_events"
+        android:layout_toEndOf="@+id/text_search_events"
+        android:src="@drawable/ic_baseline_filter_alt_24"
+        android:textAlignment="textEnd"
+        />
     <!--android:inputType="text"-->
 
     <!-- Despres de 1h, onClick no funcione en Fragments. increible -->
     <LinearLayout
+        android:id="@+id/layoutBaseFilters"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/text_search_events"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/order_by_popular"
@@ -91,6 +80,7 @@
             android:textSize="18sp"
             android:textAlignment="center"
             android:clickable="true"
+            android:focusable="true"
             android:hint="Populares"/>
         <TextView
             android:id="@+id/order_by_distance"
@@ -100,6 +90,7 @@
             android:textSize="18sp"
             android:textAlignment="center"
             android:clickable="true"
+            android:focusable="true"
             android:hint="Cercanía"/>
         <TextView
             android:id="@+id/order_by_recommended"
@@ -109,79 +100,58 @@
             android:textSize="18sp"
             android:textAlignment="center"
             android:clickable="true"
+            android:focusable="true"
             android:hint="Recomendado"/>
     </LinearLayout>
 
     <!-- La linia horitzontal selectora.                                                 2hores.   JURO QUE EM VULL PEGAR UN TIRO AL PEU
           -->
     <LinearLayout
+        android:id="@+id/layoutUnderline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="135dp"
-        android:textSize="20sp"
-        android:orientation="horizontal">
+        android:layout_below="@+id/layoutBaseFilters"
+        android:orientation="horizontal"
+        android:textSize="20sp">
 
         <View
             android:id="@+id/underline1"
             android:layout_width="0dp"
             android:layout_height="3dp"
-            android:background="@color/blue"
+            android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:alpha="0.9"
-            android:layout_marginTop="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:background="@color/blue" />
+
         <View
             android:id="@+id/underline2"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/gray"
+            android:layout_marginTop="2dp"
             android:layout_weight="1"
             android:alpha="0.9"
-            android:layout_marginTop="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:background="@color/gray" />
 
         <View
             android:id="@+id/underline3"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/gray"
+            android:layout_marginTop="2dp"
             android:layout_weight="1"
             android:alpha="0.9"
-            android:layout_marginTop="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:background="@color/gray" />
 
     </LinearLayout>
 
-    <!-- Aqui aniran els events extrets de la API
-    <ListView
-        android:id="@+id/listView_events"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/eventRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="140dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_below="@+id/layoutBaseFilters"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/white" />
 
-    </ListView>-->
-
-
-
-    <!--
-    <SearchView
-        android:id="@+id/text_search_prove"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="buscar evento"
-        android:textSize="20sp"
-        android:layout_marginTop="150dp"
-        />
--->
+    <!-- Aquest text s'ha d'eliminar després  -->
     <TextView
         android:id="@+id/text_dashboard"
         android:layout_width="match_parent"
@@ -190,9 +160,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textSize="20sp" />
+
+</RelativeLayout>
+
