@@ -15,7 +15,16 @@
         android:id="@+id/navigation_events"
         android:name="com.example.tfg_application.ui.dashboard.DashboardFragment"
         android:label="@string/title_events"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_events_to_navigation_chat"
+            app:destination="@id/navigation_chat"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_navigation_events_to_navigation_map"
+            app:destination="@id/navigation_map" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_map"

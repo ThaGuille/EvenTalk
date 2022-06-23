@@ -58,24 +58,46 @@ public class EventsRequester {
     //private GeoHash geoHash;
     //private JSONArray jsonArray;
 
-    public void getEvent(String query, Context context, Location location, TextView viewTempoText){
+    private Location location;
+    private String radius;
+    private String textFilter;
+    private String typeFilter;
+    private String city;
+    private String countryCode;
+
+    public void getEvent(Context context){
         Log.i("events", "EventsRequester location " + location);
         RequestQueue queue = Volley.newRequestQueue(context);
 
         //La url es cree a partir de la query passada
 
-        String url = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";
+        String url = "https://app.ticketmaster.com/discovery/v2/events.json?apikey="+BuildConfig.ticketmaster_api;
 
         //query a la api de ticketmaster, com no estan fets els filtres se'n fa una predeterminada amb la ubicacio de l'usuari
         //format per inclore paraula, localitzacio i radi
         //String query = String.format("apikey=%s&geoPoint=%s&keyword=%s&radius=%s", API_KEY, geoHash, keyword, 50);
         //        String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?latlong="+location.getLatitude()+","+location.getLongitude()+ "&radius=60&size=10&apikey=";
+        if(textFilter!=null){
+            url += "&keyword="+textFilter;
+        }
+        if(city!=null)
+            url+= "&city="+city;
+        //Si hi ha medida "radius" es per filtrar
+        if(location!=null & radius!=null)
+            url+= "&latLong="+location.getLatitude()+","+ location.getLongitude()+ "&radius="+radius + "&unit=km";
+        if(city!=null){
+            url+="&city="+city;
+        }
+        if(countryCode!=null){
+            url+="&countryCode="+countryCode;
+        }
+        Log.i("proba", url);
         String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, urlLocation + BuildConfig.ticketmaster_api, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    Log.i("events", "respuesta en string: " + response);
+                    //Log.i("events", "respuesta en string: " + response);
                     processEvent(response);
                 }
                 catch(Exception e){
@@ -109,18 +131,18 @@ public class EventsRequester {
                 String type;
                 String url ;
                 JSONArray images;
-                JSONObject imagesJSON;
                 String localDate;
                 String localTime;
-                String location;
+                Location location;
                 String place = null;
                 Event mEvent;
                 Event.EventBuilder mEventBuilder;
                 Log.i("events", "process Event: " + i + ": " + event);
                 //witeResult(event);
+                //no cal agafar-ho a tots els events
                 int totalPages = page.getInt("totalPages");
-                Log.i("events", "Toal pages: " + totalPages);
-                try{
+
+                try{     // ----------------  ---------------------
                     id = event.getString("id");
                     name = event.getString("name");
                     type = event.getString("type");
@@ -128,16 +150,15 @@ public class EventsRequester {
                     //images = event.getString("images"); //dins de images:[{"url": lo que volem}{"url": lo que volem}]
                     //Log.i("events","images: "+ images);
                     images = event.getJSONArray("images");
-                    for(int k=0; k<images.length();k++){
+                    /*for(int k=0; k<images.length();k++){
                         Log.i("events","imagesJSONArray: "+ k + images.get(k));
-                    }
-
+                    }*/
                     mEventBuilder = new Event.EventBuilder(id, name, type, url, images);
                 }catch (Exception e){
                     Log.i("events", "Error en la carga: " + e);
                     throw new RuntimeException(e);
                 }
-                try {
+                try {    // ---------------- FECHA ---------------------
                     localDate = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
                     localTime = event.getJSONObject("dates").getJSONObject("start").getString("localTime");
                     //Log.i("events", "localDate: " + localDate);
@@ -148,28 +169,34 @@ public class EventsRequester {
                     Date date = formatoOrigen.parse(fechaOriginal); //format Wed Jun 15 17:00:00 GMT 2022
                     Log.i("events", "Date parsed: " + date);
                     mEventBuilder.setEventDate(date);
-                }catch (Exception e){
-                    Log.i("events", "Error en la carga: " + e);
-                }
+                }catch (Exception e){ Log.i("events", "Error en la carga: " + e); }
                 try{
-                location = event.getString("location");
-                //Falte passarla a Location mEventBuilder.setEventLocation(location);
-                }
-                catch (Exception ignored){}
+                    //No se pk les hores de start i end no quadren i surt la de start despres de la de end, pero haurie de ser com està fet.
+                    String startDateTime = event.getJSONObject("dates").getJSONObject("start").getString("dateTime");
+                    String endDateTime = event.getJSONObject("dates").getJSONObject("start").getString("localTime");
+                    String Date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
+                    Log.i("events", "Date: " + Date + ", start Time: " + startDateTime + ", end time: " + endDateTime);
+                }catch (Exception e){ Log.i("events", "Error en la carga: " + e); }
                 try{
-                    place = event.getString("place");
+                    JSONArray temp = event.getJSONObject("_embedded").getJSONArray("venues");
+                    place = temp.getJSONObject(0).getJSONObject("address").getString("line1");
                     mEventBuilder.setEventPlace(place);
-                }catch (Exception ignored){}
-                if(place==null){
-                    try{
-                        place = event.getString("address");
-                        mEventBuilder.setEventPlace(place);
-                    }catch (Exception ignored){}
-                }
-                Log.i("events", "proba 2");
+                }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
+
+                try{
+                    JSONArray temp = event.getJSONObject("_embedded").getJSONArray("venues");
+                    //location = temp.getJSONObject(0).getString("location");
+                    //Log.i("events", "location string: " + location);
+                    Location mLocation = new Location(name);
+                    JSONObject lol = temp.getJSONObject(0).getJSONObject("location");
+                    mLocation.setLongitude(lol.getDouble("longitude"));
+                    mLocation.setLatitude(lol.getDouble("latitude"));
+                    location = mLocation;
+                    //Log.i("events", "location Location: " + mLocation);
+                    mEventBuilder.setEventLocation(location);
+                }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
 
                 mEvent = new Event(mEventBuilder);
-                Log.i("events", "mEvent: "  + mEvent);
                 mAllEvents[i] = mEvent;
             }
 
@@ -182,10 +209,39 @@ public class EventsRequester {
         //Llamar a EventAdapter
     }
 
+    public void setLocation(Location location){
+        this.location = location;
+    }
+    public void setTextFilter(String text){
+        this.textFilter = text;
+    }
+    public void setTypeFilter(String type){
+        this.typeFilter = type;
+    }
+    public void setRadius(Integer radius){
+        this.radius = radius.toString();
+    }
+    public void setCity(String city){
+        this.city = city;
+    }
+    public void setCountryCode(String countryCode){
+        this.countryCode = countryCode;
+    }
+
+    private void resetParameters(){
+        this.location = null;
+        this.textFilter = null;
+        this.typeFilter = null;
+        this.radius = null;
+        this.city = null;
+        this.countryCode = null;
+    }
+
+
     private void callEventAdapter(Event[] mAllEvents){
         if(mAllEvents.length == 0){return;}
         //Class df = DashboardFragment;
-
+        resetParameters();
         //classe.getMethod(method, c)
         DashboardFragment.changeEvents(mAllEvents);
         //EventAdapter eventAdapter = new EventAdapter();

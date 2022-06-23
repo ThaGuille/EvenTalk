@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;*/
+import com.example.tfg_application.ui.dashboard.model.Event;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -42,9 +43,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    //revisar private FusedLocationProviderClient mFusedLocationClient;
-    private String mLatitudeLabel;
-    private String mLongitudeLabel;
     private FirebaseDatabase db;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 99;
     //private MessageAdapter adapter;
@@ -88,16 +86,12 @@ public class MainActivity extends AppCompatActivity {
         }else{
             startLocationPermissionRequest();
         }*/
-        //LocationManager lm = (LocationManager)getSystemService(this.LOCATION_SERVICE);
-        /*Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();*/
+
     }
 
+    public void goToMap(Event event){
 
-    /*Override
-    public void onRequestPermissionResult()*/
-
+    }
 
     @Override
     protected void onStart(){
@@ -109,27 +103,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*private void getLastLocation() {
-        mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            mLastLocation = task.getResult();
-
-                            mLatitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
-                                    mLatitudeLabel,
-                                    mLastLocation.getLatitude()));
-                            mLongitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
-                                    mLongitudeLabel,
-                                    mLastLocation.getLongitude()));
-                        } else {
-                            Log.w(TAG, "getLastLocation:exception", task.getException());
-                            showSnackbar(getString(R.string.no_location_detected));
-                        }
-                    }
-                });
-    }*/
 
     private boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(this,

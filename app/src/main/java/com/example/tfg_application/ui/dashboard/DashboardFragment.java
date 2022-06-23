@@ -26,6 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,12 +38,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tfg_application.LocationActivity;
+import com.example.tfg_application.MainActivity;
 import com.example.tfg_application.R;
 import com.example.tfg_application.SignInActivity;
 import com.example.tfg_application.databinding.FragmentDashboardBinding;
+import com.example.tfg_application.ui.chat.ChatFragment;
 import com.example.tfg_application.ui.dashboard.model.Event;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -104,6 +109,15 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 setUnderlineActive(binding.underline2);
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.navigation_events, true)
+                        .build();
+                Bundle bundle = new Bundle();
+                Navigation.findNavController(v).navigate(R.id.action_navigation_events_to_navigation_chat, bundle, navOptions);
+                //Navigation.findNavController(v).clearBackStack(R.id.action_navigation_events_to_navigation_chat);
+                /*Class classe = ChatFragment.class;
+                Intent intent = new Intent(getContext(), classe);
+                startActivity(intent);*/
             }
         });
         final View recommended = binding.orderByRecommended;
@@ -123,16 +137,11 @@ public class DashboardFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     // Your piece of code on keyboard search click
-                    Log.i("events", "BUSCANDOOOO");
-
                     //Per si ho volgues realitzar amb IntentService, pero no té pinta que sigui rentable
                     /*Intent intent = new Intent(getActivity(), EventsRequester.class);
                     intent.setClassName("com.example.tfg_application.ui.dashboard", "com.example.tfg_application.ui.dashboard.EventsRequester");
                     getActivity().startService(intent);*/
-                    Log.i("events", "started");
 
-                    //Aquí es passarà la query ya filtrada o s'anirà a un altre mètode que la filtri o algo, no es passe el text a lo bruto
-                    //lastLocation();
                     Context context = getContext();
                     //Apuntar com s'ha fet aixo per a que funcioni: antic codi
                     //Object o = (Object) this;
@@ -140,8 +149,23 @@ public class DashboardFragment extends Fragment {
                     //pero aixo retornava la classe com...DashboardFragment$4. S'ha hagut d'agafar la referencia a la classe i al objecte per a que funcioni
                     Object o2 = (Object)  DashboardFragment.this;
                     //I això es farà amb aquest mètode, però de moment per fer probes no cal (pero ja funciona)
-                    locationActivity.lastLocation(o2, DashboardFragment.class, "getLocation");
-                    Log.i("events", "proba1" + mLastLocation);
+
+                    /*
+                    * if tenim permisos de localització (suposo que tmb es pot cridar directament i comprovar-ho allí, depenent del resultat), el sistema actual i return
+                    * else, cridar al eventsRequester desde aquí sense la localització
+                    * */
+                    if(buscador.getText().length()>0){
+                        Log.i("proba", "no text at filter: " + buscador.getText());
+                        eventsRequester.setTextFilter(buscador.getText().toString());
+                    }
+                    if(requestPermission()) {
+                        Log.i("proba", "location permission passed");
+                        //eventsRequester.setCountryCode("ES");
+                        locationActivity.lastLocation(o2, DashboardFragment.class, "getLocation");
+                        return true;
+                    }
+                    Log.i("proba", "NO DEBERÍA ESTAR VIENDO ESTO");
+                    eventsRequester.getEvent(getContext());
                     //eventsRequester.getEvent(buscador.getText().toString(), context, mLastLocation);
                     return true;
                 }
@@ -152,44 +176,23 @@ public class DashboardFragment extends Fragment {
         return root;
     }
 
+    //Mètode cridat desde LocationActivity per retornar la localització
     public void getLocation(Location location){
+        Log.i("proba", "estem al getLocation");
         //-------Revisar: sa de passar latLong a geoHash ------------------
         //String geoHash = GeoHash.encodeGeohash(lat, lon, 8);
         mLastLocation = location;
         LatLng ltlg = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         EditText buscador = binding.textSearchEvents;
         Log.i("events", "al getLocation" + mLastLocation);
-        TextView textoTemporal = binding.textDashboard;
-        eventsRequester.getEvent(buscador.getText().toString(), getContext(), mLastLocation, textoTemporal);
+        eventsRequester.setLocation(mLastLocation);
+        //eventsRequester.setRadius(100);
+        eventsRequester.getEvent(getContext());
     }
 
-    //Això s'ha d'eliminar i substituir pel mètode de LocationActivity
-    private void lastLocation() {
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mFusedLocationProviderClient.getLastLocation()
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            mLastLocation = task.getResult();
-                            /*Log.i("location", String.format(Locale.ENGLISH, "%s: %f", mLastLocation.getLatitude()));
-                            Log.i("location", String.format(Locale.ENGLISH, "%s: %f", mLastLocation.getLongitude()));*/
-                            Log.i("locationnnn", mLastLocation.toString());
-                            //Revisar:
-                            getLocation(mLastLocation);
-                        } else {
-                            Log.w("location", "location fail:" + task.getException());
-                        }
-                    }
-                });
-    }
 
     private boolean requestPermission(){
-        int permissionState = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void setUnderlineActive(View v){
@@ -207,7 +210,6 @@ public class DashboardFragment extends Fragment {
     //Enlloc de tantes coses estatiquees tmb es podrie fer adapter.registerAdapterDataObserver(classe(adapter, eventsRequester))
     //I en aquella classe fer les operacions, agafant els events de la propia classe eventsRequester
     public static void changeEvents(Event[] events){
-        Log.i("events", "changing Events");
         List<Event> eventList = Arrays.asList(events);
         mEventList.clear();
         mEventList.addAll(eventList);

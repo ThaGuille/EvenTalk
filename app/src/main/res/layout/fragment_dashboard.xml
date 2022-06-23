@@ -147,9 +147,16 @@
         android:id="@+id/eventRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/eventSpace"
         android:layout_below="@+id/layoutBaseFilters"
         android:layout_marginTop="5dp"
         android:background="@android:color/white" />
+    <Space
+        android:id="@+id/eventSpace"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        />
 
     <!-- Aquest text s'ha d'eliminar després  -->
     <TextView

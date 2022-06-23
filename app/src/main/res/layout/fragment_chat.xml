@@ -25,9 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
         android:background="@color/colorLightGray"
         android:orientation="horizontal"
-        android:layout_marginBottom="60dp"
         android:paddingHorizontal="10dp">
 
         <ImageView
@@ -36,18 +36,19 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             ads:srcCompat="@drawable/outline_add_photo_alternate_24" />
-
         <EditText
             android:id="@+id/messageEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
             android:background="@drawable/edit_text_shadow"
             android:hint="Say something..."
-            android:inputType="text" />
+            android:inputType="text"
+            android:padding="10dp" />
+
+
 
         <ImageView
             android:id="@+id/sendButton"

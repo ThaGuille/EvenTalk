@@ -1,23 +1,19 @@
 package com.example.tfg_application.ui.dashboard
 
+import android.location.Location
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tfg_application.R
-import com.example.tfg_application.databinding.ImageMessageBinding
-import com.example.tfg_application.databinding.MessageBinding
 import com.example.tfg_application.databinding.SmallEventBinding
-import com.example.tfg_application.ui.chat.ChatFragment
-import com.example.tfg_application.ui.chat.MessageAdapter
-import com.example.tfg_application.ui.chat.model.ChatMessage
 import com.example.tfg_application.ui.dashboard.model.Event
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import org.json.JSONObject
 
 class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
@@ -27,7 +23,6 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
 
     //private var mAllEvents2: List<Event>? = null
     //private var mAllEvents: Array<Event>? = null
-
 
     //Aquesta es la classe que guarde tots els elements de la UI que usarem, comuns per a tots els Contenidors
     class ViewHolder(private val binding: SmallEventBinding) : RecyclerView.ViewHolder(binding.root){
@@ -45,9 +40,18 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
                 val imgUrlJson: JSONObject = item.images.getJSONObject(0)
                 val imgUrl: String = imgUrlJson.getString("url")
                 Glide.with(binding.eventImageView.context).load(imgUrl).into(binding.eventImageView)
-                Log.i(TAG, imgUrl)
             }
-
+            if(item.location!=null){
+                binding.eventButtonMap.setOnClickListener(View.OnClickListener {
+                    goToMap(item)
+                } )
+            }
+            binding.eventButtonSave.setOnClickListener(View.OnClickListener {
+                saveEvent(item)
+            })
+            binding.eventButtonChat.setOnClickListener(View.OnClickListener {
+                goToChat(item.id)
+            })
             /* Parse images
             if (item.imagesUrl != null) {
                 loadImageIntoView(binding.eventImageView, item.imagesUrl[0]!!)
@@ -57,13 +61,48 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
             //Revisar: falte la direccio i la imatge, si tot va bé les posem despres
             //setTextColor(item.name, binding.messageTextView)
         }
+
+        //Ens envie a la pantalla del mapa passant sol les variables que requerirem allí
+        private fun goToMap(event: Event){
+            //Log.i(TAG, "map button clicked: $location")
+            val navOptions: NavOptions = NavOptions.Builder()
+                .setPopUpTo(R.id.navigation_events, true)
+                .build()
+            val bundle = Bundle()
+            bundle.putString("id", event.id)
+            bundle.putString("name", event.name)
+            if(event.date!=null)
+                bundle.putString("date", event.date.toString())
+            val imgUrlJson: JSONObject = event.images.getJSONObject(0)
+            val imgUrl: String = imgUrlJson.getString("url")
+            bundle.putString("image", imgUrl)
+            if(event.location!=null) {
+                bundle.putString("latitude", event.location.latitude.toString())
+                bundle.putString("longitude", event.location.longitude.toString())
+            }
+            findNavController(this.itemView).navigate(
+                R.id.action_navigation_events_to_navigation_map,
+                bundle,
+                navOptions
+            )
+
+            //Metode per anar a mapFragament en la ubicació indicada
+        }
+        private fun saveEvent(event: Event){
+            Log.i(TAG, "save button clicked: ${event.name}")
+            //Metode per guardar l'event
+        }
+        private fun goToChat(id: String){
+            Log.i(TAG, "chat button clicked: $id")
+            //Metode per guardar l'event
+        }
+
     }
 
     //Es crida quan s'ha de crear un nou ViewHolder. Fa el inflate del small_event
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         //return if (viewType == MessageAdapter.VIEW_TYPE_TEXT) {
-        Log.i(TAG, "onCreateViewHolder")
         val view = inflater.inflate(R.layout.small_event, parent, false)
             val binding = SmallEventBinding.bind(view)
             return ViewHolder(binding)
@@ -78,7 +117,6 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
     //Aquest mètode es crida cada cop que es mostra per pantalla una nova view, amb la seva posició. Serveix per establir les dades
     // Per tant hem d'obtenir l'event a partir de la posicio o crear un RecyclerAdapter personalitzat que ho faci automaticament com ho fa el de firebase.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.i(TAG, "onBindViewHolder")
         //Aquest mètode serveix per agafar el model i per fer diferents EventViewHolder per les diferents opcions
        // if (options.snapshots[position].text != null) {
         // event = mMySavedEvents.get(position) o algo així
@@ -91,27 +129,6 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
 
     }
 
-    private fun loadImageIntoView(view: ImageView, url: String) {
-        if (url.startsWith("gs://")) {
-            val storageReference = Firebase.storage.getReferenceFromUrl(url)
-            storageReference.downloadUrl
-                .addOnSuccessListener { uri ->
-                    val downloadUrl = uri.toString()
-                    Glide.with(view.context)
-                        .load(downloadUrl)
-                        .into(view)
-                }
-                .addOnFailureListener { e ->
-                    Log.w(
-                        MessageAdapter.TAG,
-                        "Getting download url was not successful.",
-                        e
-                    )
-                }
-        } else {
-            Glide.with(view.context).load(url).into(view)
-        }
-    }
 
     /*fun setmAllEvents(events: Array<Event>){
         Log.i(TAG, "setAllEvents")
@@ -119,7 +136,6 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
     }*/
 
     override fun getItemCount(): Int {
-        Log.i(TAG, " getItemCount: "+ mAllEvents.size)
         return mAllEvents.size
     }
 

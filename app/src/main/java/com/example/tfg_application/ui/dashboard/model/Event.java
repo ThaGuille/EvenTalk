@@ -18,6 +18,8 @@ public class Event {
     public double distance = -1;
     public Location location;
     public Date date;
+    public String startDateTime;
+    public String endDateTime;
     public String place;
 
     public JSONObject toJSONObject(){
@@ -56,6 +58,8 @@ public class Event {
         private Location location;
         private Date date;
         private String place;
+        private String startDateTime;
+        private String endDateTime;
 
 
         //EventBuilder bàsic
@@ -119,13 +123,19 @@ public class Event {
             return this;
         }
         public EventBuilder setEventDate(Date date) {
-            Log.i("Event", "Set date");
             this.date = date;
             return this;
         }
         public EventBuilder setEventPlace(String place) {
-            Log.i("Event", "Set place");
             this.place = place;
+            return this;
+        }
+        public EventBuilder setStartDateTime(String startDateTime){
+            this.startDateTime = startDateTime;
+            return this;
+        }
+        public EventBuilder setEndDateTime(String endDateTime){
+            this.endDateTime = endDateTime;
             return this;
         }
 
@@ -144,6 +154,8 @@ public class Event {
         this.description = builder.description;
         this.date = builder.date;
         this.place = builder.place;;
+        this.startDateTime = builder.startDateTime;
+        this.endDateTime = builder.endDateTime;
 
         // when build the item we get
        /* public static void main(String[] args) {
