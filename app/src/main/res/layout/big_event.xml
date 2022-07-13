@@ -1,6 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- img height ideal 3:2 = 420:280, pero quede molt alta
+
+    -->
+    <ImageView
+        android:id="@+id/topImageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_baseline_no_photography_24" />
+    <!--
+       <View
+           android:id="@+id/horizontalLine1"
+           android:layout_width="match_parent"
+           android:layout_height="4dp"
+           android:layout_above="@+id/dateTextView"
+           android:layout_marginTop="0dp"
+           android:layout_marginBottom="10dp"
+           android:alpha="0.9"
+           android:background="@color/gray" />
+       -->
+       <TextView
+           android:id="@+id/titleTextView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/topImageView"
+           android:layout_marginStart="15dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="15dp"
+           android:layout_marginBottom="15dp"
+           android:maxLines="2"
+           android:text="MADCOOL FESTIVAL VALENCIA MANUELA CARMENA"
+           android:textAppearance="?android:attr/textAppearanceLarge"
+           android:textColor="@android:color/black"
+           android:textStyle="bold" />
+
+       <ImageView
+           android:id="@+id/dateImageView"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/titleTextView"
+           android:layout_gravity="center"
+           android:layout_marginStart="15dp"
+           android:layout_marginTop="10dp"
+           android:src="@drawable/ic_baseline_calendar_today_36" />
+
+       <TextView
+           android:id="@+id/dateTextView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@+id/dateImageView"
+           android:layout_marginStart="15dp"
+           android:layout_marginEnd="15dp"
+           android:layout_toRightOf="@+id/dateImageView"
+           android:singleLine="true"
+           android:text="miércoles, julio 13, 2022"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textColor="@android:color/black" />
+
+       <TextView
+           android:id="@+id/hourTextView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/dateTextView"
+           android:layout_marginStart="15dp"
+           android:layout_marginEnd="15dp"
+           android:layout_toRightOf="@+id/dateImageView"
+           android:singleLine="true"
+           android:text="20:00 - 22:00 CEST"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textColor="@android:color/black" />
+
+       <ImageView
+           android:id="@+id/locationImageView"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/hourTextView"
+           android:layout_gravity="center"
+           android:layout_marginStart="15dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="15dp"
+           android:src="@drawable/ic_baseline_location_on_36" />
+
+       <TextView
+           android:id="@+id/locationTextView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@+id/locationImageView"
+           android:layout_marginEnd="15dp"
+           android:singleLine="true"
+           android:layout_toRightOf="@+id/locationImageView"
+           android:layout_alignStart="@+id/hourTextView"
+           android:text="miércoles, julio 13, 2022"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textColor="@android:color/black"
+           />
+
+       <ImageView
+           android:id="@+id/priceImageView"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/locationImageView"
+           android:layout_gravity="center"
+           android:layout_marginStart="15dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="15dp"
+
+           android:src="@drawable/ic_baseline_local_movies_24" />
+
+       <TextView
+           android:id="@+id/priceTextView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@+id/priceImageView"
+           android:layout_marginEnd="15dp"
+           android:singleLine="true"
+           android:layout_toRightOf="@+id/priceImageView"
+           android:layout_alignStart="@+id/hourTextView"
+           android:text="Gratis, en Ticketmaster"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textColor="@android:color/black"
+           />
+       <ImageView
+           android:id="@+id/linkImageView"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/priceImageView"
+           android:layout_gravity="center"
+           android:layout_marginStart="15dp"
+           android:layout_marginTop="15dp"
+           android:layout_marginEnd="15dp"
+           android:src="@drawable/ic_baseline_link_24" />
+
+       <TextView
+           android:id="@+id/linkTextView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignStart="@+id/hourTextView"
+           android:layout_alignTop="@+id/linkImageView"
+           android:layout_marginEnd="15dp"
+           android:layout_toRightOf="@+id/linkImageView"
+           android:singleLine="true"
+           android:text="Gratis, en Ticketmaster"
+           android:textAppearance="?android:attr/textAppearanceMedium"
+           android:textColor="@android:color/black" />
+
+       <View
+           android:id="@+id/horizontalLine2"
+           android:layout_width="match_parent"
+           android:layout_height="4dp"
+           android:layout_above="@+id/fotosTextView"
+           android:layout_marginTop="0dp"
+           android:layout_marginBottom="-15dp"
+           android:alpha="0.9"
+           android:background="@color/gray" />
+
+       <TextView
+           android:id="@+id/fotosTextView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/linkTextView"
+           android:layout_margin="15dp"
+           android:singleLine="true"
+           android:text="FOTOS"
+           android:textAppearance="?android:attr/textAppearanceLarge"
+           android:textColor="@android:color/black"
+           android:textStyle="bold" />
+
+       <ImageView
+           android:id="@+id/galleryImageView"
+           android:layout_width="match_parent"
+           android:layout_height="200dp"
+           android:layout_gravity="center"
+           android:layout_below="@+id/fotosTextView"
+           android:src="@drawable/ic_baseline_no_photography_24" />
+
+   </RelativeLayout>
