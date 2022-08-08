@@ -159,7 +159,7 @@
         />
 
     <!-- Aquest text s'ha d'eliminar després  -->
-    <TextView
+    <!--<TextView
         android:id="@+id/text_dashboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="20sp" />
+        android:textSize="20sp" />-->
 
 </RelativeLayout>
 

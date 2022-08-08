@@ -1,18 +1,22 @@
 package com.example.tfg_application.ui.dashboard
 
-import android.location.Location
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.Nullable
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tfg_application.R
 import com.example.tfg_application.databinding.SmallEventBinding
+import com.example.tfg_application.ui.BigEvent
 import com.example.tfg_application.ui.dashboard.model.Event
 import org.json.JSONObject
 
@@ -37,15 +41,20 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
             if(item.place != null)
                 binding.eventTextAdress.text = item.place
             if(item.images!=null){
-                val imgUrlJson: JSONObject = item.images.getJSONObject(0)
-                val imgUrl: String = imgUrlJson.getString("url")
-                Glide.with(binding.eventImageView.context).load(imgUrl).into(binding.eventImageView)
+                //val imgUrlJson: JSONObject = item.images.getJSONObject(0)
+                //val imgUrlJson: JSONObject = item.images.getJSONObject(0)
+                //val imgUrl: String = imgUrlJson.getString("url")
+                //Glide.with(binding.eventImageView.context).load(imgUrl).into(binding.eventImageView)
+                Glide.with(binding.eventImageView.context).load(item.mainImage).into(binding.eventImageView)
             }
             if(item.location!=null){
                 binding.eventButtonMap.setOnClickListener(View.OnClickListener {
                     goToMap(item)
                 } )
             }
+            binding.eventLayout.setOnClickListener(View.OnClickListener {
+                showBigEvent(item)
+            })
             binding.eventButtonSave.setOnClickListener(View.OnClickListener {
                 saveEvent(item)
             })
@@ -90,11 +99,35 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
         }
         private fun saveEvent(event: Event){
             Log.i(TAG, "save button clicked: ${event.name}")
+            Log.i(TAG, "date: ${event.date}")
+            Log.i(TAG, "startDayTime: ${event.startDateTime}")
+            Log.i(TAG, "endDayTime: ${event.endDateTime}")
             //Metode per guardar l'event
         }
         private fun goToChat(id: String){
             Log.i(TAG, "chat button clicked: $id")
             //Metode per guardar l'event
+        }
+        private fun showBigEvent(event: Event){
+            Log.i(TAG, "event clicked: ${event.name}")
+                //val intent = Intent(getActivity(), BigEvent.class)
+            val message = "missatge de proba"
+            val intent = Intent(this.binding.root.context, BigEvent::class.java).apply {
+                putExtra("mainPhoto", event.mainImage)
+                putExtra("title", event.name)
+                putExtra("shortDate", event.shortDate)
+                putExtra("startDateTime", event.startDateTime)
+                putExtra("endDateTime", event.endDateTime)
+                //putExtra("time", message)
+                putExtra("location", event.location)
+                putExtra("place", event.place)
+                putExtra("price", event.price)
+                putExtra("galleryPhotos", event.images.toString())
+
+            }
+            val optionsBundle = Bundle()
+            startActivity(binding.root.context, intent, optionsBundle)
+
         }
 
     }

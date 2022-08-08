@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
     private void openLayout(Class classe){
         Intent intent = new Intent(getActivity(), classe);
         startActivity(intent);
-        getActivity().finish();
+        //getActivity().finish();
     }
 
 

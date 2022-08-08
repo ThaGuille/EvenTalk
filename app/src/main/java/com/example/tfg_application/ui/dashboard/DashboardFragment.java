@@ -86,7 +86,9 @@ public class DashboardFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        final TextView textView = binding.textDashboard;
+        //Sistema per vincular un element amb la classe ViewModel
+        //final TextView textView = binding.textDashboard;
+        //dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         param1 = (LinearLayout.LayoutParams) binding.underline1.getLayoutParams();
         param2 = (LinearLayout.LayoutParams) binding.underline2.getLayoutParams();
         eventsRequester = new EventsRequester();
@@ -95,7 +97,7 @@ public class DashboardFragment extends Fragment {
 
         //locationManager = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
         //.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
 
         final View popular = binding.orderByPopular;
         popular.setOnClickListener(new View.OnClickListener() {
@@ -136,20 +138,10 @@ public class DashboardFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    // Your piece of code on keyboard search click
-                    //Per si ho volgues realitzar amb IntentService, pero no té pinta que sigui rentable
-                    /*Intent intent = new Intent(getActivity(), EventsRequester.class);
-                    intent.setClassName("com.example.tfg_application.ui.dashboard", "com.example.tfg_application.ui.dashboard.EventsRequester");
-                    getActivity().startService(intent);*/
 
                     Context context = getContext();
-                    //Apuntar com s'ha fet aixo per a que funcioni: antic codi
-                    //Object o = (Object) this;
-                    //locationActivity.lastLocation(o, getclass(), "getLocation");
-                    //pero aixo retornava la classe com...DashboardFragment$4. S'ha hagut d'agafar la referencia a la classe i al objecte per a que funcioni
                     Object o2 = (Object)  DashboardFragment.this;
                     //I això es farà amb aquest mètode, però de moment per fer probes no cal (pero ja funciona)
-
                     /*
                     * if tenim permisos de localització (suposo que tmb es pot cridar directament i comprovar-ho allí, depenent del resultat), el sistema actual i return
                     * else, cridar al eventsRequester desde aquí sense la localització

@@ -3,6 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_chat_24.xml" value="0.2945" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_chat_36.xml" value="0.2945" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_event_24.xml" value="0.2945" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.169" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_favorite_36.xml" value="0.169" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.169" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_filter_alt_24.xml" value="0.169" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_local_movies_24.xml" value="0.2945" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_local_movies_36.xml" value="0.2945" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_map_24.xml" value="0.169" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.169" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_photo_library_24.xml" value="0.2945" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.169" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/layout/activity_configuration.xml" value="0.325" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/layout/big_event.xml" value="0.325" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/layout/event_toolbar.xml" value="0.157548125633232" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/layout/fragment_chat.xml" value="0.325" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/layout/fragment_dashboard.xml" value="0.325" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/layout/small_event.xml" value="0.325" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/menu/bottom_nav_menu.xml" value="0.325" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/menu/toolbar.xml" value="0.32395833333333335" />
+        <entry key="..\:/Users/guill/StudioProjects/TFG/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1375" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable-v24/ic_launcher_background.xml" value="0.196" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3675" />
         <entry key="..\:/Users/yonki/OneDrive/Documents/Deures/4rt gei/Plataformes en xarxa/TFG_Application/app/src/main/res/drawable/edit_text_shadow.xml" value="0.196" />
@@ -44,7 +66,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

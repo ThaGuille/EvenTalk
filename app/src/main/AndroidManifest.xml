@@ -24,6 +24,10 @@
         <activity android:name=".SignInActivity"
             android:exported="true"/>
         <activity android:name=".ui.home.tabs.Configuration"
+            android:label="Configuración"
+            android:exported="true"/>
+        <activity android:name=".ui.BigEvent"
+            android:label="Event"
             android:exported="true"/>
         <activity
             android:name=".MainActivity"

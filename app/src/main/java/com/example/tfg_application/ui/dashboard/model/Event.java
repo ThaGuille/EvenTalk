@@ -4,22 +4,27 @@ import android.location.Location;
 import android.util.Log;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
 
 public class Event {
+    //Revisar: no se si aixo haurie de ser public
     public String id;
     public String name;
     public String description;
     public String type;
     public String url;
     public JSONArray images;
+    public String mainImage;
     public double distance = -1;
     public Location location;
     public Date date;
+    public String shortDate;
     public String startDateTime;
     public String endDateTime;
+    public String price;
     public String place;
 
     public JSONObject toJSONObject(){
@@ -36,6 +41,14 @@ public class Event {
             if(distance!=-1){obj.put("distance",distance);}
             if(location!=null){obj.put("location",location);}
             if(date!=null){obj.put("date",date);}
+            if(shortDate!=null && startDateTime!=null && endDateTime !=null){
+                obj.put("shortDate", shortDate);
+                obj.put("startDateTime", startDateTime);
+                obj.put("endDateTime", endDateTime);
+            }
+            if(price!=null){
+                obj.put("price", price);
+            }
             if(place!=null){obj.put("place",place);}
             if(description!=null){obj.put("description",description);}
 
@@ -54,13 +67,15 @@ public class Event {
         private String type;
         private String url;
         private JSONArray images;
+        private String mainImage;
         private double distance;
         private Location location;
         private Date date;
         private String place;
+        public String shortDate;
         private String startDateTime;
         private String endDateTime;
-
+        public String price;
 
         //EventBuilder bàsic
         public EventBuilder(String id, String name, String type, String url, JSONArray images) {
@@ -70,6 +85,11 @@ public class Event {
             this.type = type;
             this.url = url;
             this.images = images;
+            try {
+                this.mainImage = images.getJSONObject(0).getString("url");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         //EventBuilder + localització
@@ -108,6 +128,15 @@ public class Event {
         }
         public EventBuilder setEventImagesUrl(JSONArray images) {
             this.images = images;
+            try {
+                this.mainImage = images.getJSONObject(0).getString("url");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return this;
+        }
+        public EventBuilder setEventMainImage(String mainImageimage){
+            this.mainImage = mainImage;
             return this;
         }
         public EventBuilder setEventDistance(double distance) {
@@ -130,12 +159,20 @@ public class Event {
             this.place = place;
             return this;
         }
+        public EventBuilder setShortDate(String shortDate){
+            this.shortDate = shortDate;
+            return this;
+        }
         public EventBuilder setStartDateTime(String startDateTime){
             this.startDateTime = startDateTime;
             return this;
         }
         public EventBuilder setEndDateTime(String endDateTime){
             this.endDateTime = endDateTime;
+            return this;
+        }
+        public EventBuilder setPrice(String price){
+            this.price = price;
             return this;
         }
 
@@ -149,13 +186,16 @@ public class Event {
         this.type = builder.type;
         this.url = builder.url;
         this.images = builder.images;
+        this.mainImage = builder.mainImage;
         this.distance = builder.distance;
         this.location = builder.location;
         this.description = builder.description;
         this.date = builder.date;
+        this.shortDate = builder.shortDate;
         this.place = builder.place;;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
+        this.price = builder.price;
 
         // when build the item we get
        /* public static void main(String[] args) {

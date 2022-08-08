@@ -172,10 +172,24 @@ public class EventsRequester {
                 }catch (Exception e){ Log.i("events", "Error en la carga: " + e); }
                 try{
                     //No se pk les hores de start i end no quadren i surt la de start despres de la de end, pero haurie de ser com està fet.
-                    String startDateTime = event.getJSONObject("dates").getJSONObject("start").getString("dateTime");
-                    String endDateTime = event.getJSONObject("dates").getJSONObject("start").getString("localTime");
+                    String startDateTime = event.getJSONObject("dates").getJSONObject("start").getString("localTime");
+                    String endDateTime = event.getJSONObject("dates").getJSONObject("start").getString("dateTime");
+                    startDateTime = startDateTime.substring(0,5);
+                    endDateTime = endDateTime.substring(11, 16);
                     String Date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
-                    Log.i("events", "Date: " + Date + ", start Time: " + startDateTime + ", end time: " + endDateTime);
+                    Log.i("date", "Date: " + Date + ", start Time: " + startDateTime + ", end time: " + endDateTime);
+                    SimpleDateFormat formatoAño = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatoAño2 = new SimpleDateFormat("dd-MM-yyyy");
+                    Log.i("date", "empieza");
+                    Date temp = formatoAño.parse(Date);
+                    Log.i("date", "any: "+formatoAño2.format(temp).toString()); //any2: 30-10-2022
+                    //Log.i("date", "any3: "+formatoAño2.parse(formatoAño2.format(temp)));//any3: Thu Oct 27 00:00:00 GMT+02:00 2022
+                    Log.i("date", "hora inici: "+ startDateTime); //Thu Jan 01 10:30:00 GMT+01:00 1970
+                    Log.i("date", "hora final: "+endDateTime);
+                    //mEventBuilder.setEventDate(date);
+                    mEventBuilder.setShortDate(Date);
+                    mEventBuilder.setStartDateTime(startDateTime);
+                    mEventBuilder.setEndDateTime(endDateTime);
                 }catch (Exception e){ Log.i("events", "Error en la carga: " + e); }
                 try{
                     JSONArray temp = event.getJSONObject("_embedded").getJSONArray("venues");
@@ -183,6 +197,37 @@ public class EventsRequester {
                     mEventBuilder.setEventPlace(place);
                 }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
 
+                try{
+                    //JSONObject temp = event.getJSONObject("_embedded").getJSONObject("priceRanges");
+                    //int minPrice = temp.getInt("min");
+                    //Log.i("events", "PRECIO MINIMO: "+ minPrice);
+                    JSONArray temp = event.getJSONArray("priceRanges");
+                    boolean foundPrice = false;
+                    if(temp.length()>0){
+                    for(int j=0;j<temp.length();j++){
+                        if(temp.getJSONObject(j).getString("type").equals("standard")){
+                            foundPrice = true;
+                            Log.i("events", "IT FOUND STANDARD PRICE: ");
+                            String min = temp.getJSONObject(j).getString("min");
+                            String max = temp.getJSONObject(j).getString("max");
+                            String currency = temp.getJSONObject(j).getString("currency");
+                            if(min.equals(max) && max.equals("0.0")){
+                                mEventBuilder.setPrice("Free");
+                            }
+                            else if(min.equals(max)){
+                                mEventBuilder.setPrice(min + " " +currency);
+                            }else {
+                                mEventBuilder.setPrice(min + " - " + max + " " +currency);
+                            }
+                        }
+                    }}
+                    if(!foundPrice) mEventBuilder.setPrice("Check lick");
+                    Log.i("events", "AND IT DID NOT CRASH IT: ");
+                    Log.i("events", "TYPE: "+ temp.getJSONObject(0).getString("type"));
+                    Log.i("events", "PRICE: "+ temp.getJSONObject(0).getString("min") + " - " + temp.getJSONObject(0).getString("max"));
+                    Log.i("events", "INDEX 2: "+ temp.getString(0));
+
+                }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
                 try{
                     JSONArray temp = event.getJSONObject("_embedded").getJSONArray("venues");
                     //location = temp.getJSONObject(0).getString("location");
