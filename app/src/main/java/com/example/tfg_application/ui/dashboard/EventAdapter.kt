@@ -18,6 +18,7 @@ import com.example.tfg_application.R
 import com.example.tfg_application.databinding.SmallEventBinding
 import com.example.tfg_application.ui.BigEvent
 import com.example.tfg_application.ui.dashboard.model.Event
+import org.json.JSONArray
 import org.json.JSONObject
 
 class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
@@ -78,17 +79,23 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
                 .setPopUpTo(R.id.navigation_events, true)
                 .build()
             val bundle = Bundle()
+
+            //Revisar: substituir tot aixo per  bundle.putSerializable("event", event);
+            bundle.putSerializable("event", event);
             bundle.putString("id", event.id)
             bundle.putString("name", event.name)
             if(event.date!=null)
                 bundle.putString("date", event.date.toString())
-            val imgUrlJson: JSONObject = event.images.getJSONObject(0)
-            val imgUrl: String = imgUrlJson.getString("url")
-            bundle.putString("image", imgUrl)
+            //val JAImg: JSONArray = new
+            //val imgUrlJson: JSONObject =  event.images.getJSONObject(0)
+            //val imgUrl: String = imgUrlJson.getString("url")
+            bundle.putString("image", event.mainImage)
             if(event.location!=null) {
-                bundle.putString("latitude", event.location.latitude.toString())
-                bundle.putString("longitude", event.location.longitude.toString())
+                bundle.putDoubleArray("location", event.location.toDoubleArray())
+                //bundle.putString("latitude", event.location.latitude.toString())
+                //bundle.putString("longitude", event.location.longitude.toString())
             }
+
             findNavController(this.itemView).navigate(
                 R.id.action_navigation_events_to_navigation_map,
                 bundle,
@@ -97,6 +104,10 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
 
             //Metode per anar a mapFragament en la ubicació indicada
         }
+
+        //------------------Mètode per guardar l'event. Copiar funcionalitat de la classe big_event---------------------
+        //------------------O millor crear una classe/metode a part a la que li passis id event + info i faci el treball
+        //------------------Igual tot serie més senzill amb un JSON i anarlo passant -----------------------------
         private fun saveEvent(event: Event){
             Log.i(TAG, "save button clicked: ${event.name}")
             Log.i(TAG, "date: ${event.date}")
@@ -108,11 +119,17 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
             Log.i(TAG, "chat button clicked: $id")
             //Metode per guardar l'event
         }
+
+        //-------------------- Obre la pantalla de event en gran i li passe les dades necessaries----------------------------
         private fun showBigEvent(event: Event){
             Log.i(TAG, "event clicked: ${event.name}")
                 //val intent = Intent(getActivity(), BigEvent.class)
             val message = "missatge de proba"
             val intent = Intent(this.binding.root.context, BigEvent::class.java).apply {
+                putExtra("event", event);
+                putExtra("jsonEvent", event.toJSONObject().toString())
+                //Revisar: eliminar tots esls
+               /* putExtra("id", event.id)
                 putExtra("mainPhoto", event.mainImage)
                 putExtra("title", event.name)
                 putExtra("shortDate", event.shortDate)
@@ -123,7 +140,7 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
                 putExtra("place", event.place)
                 putExtra("price", event.price)
                 putExtra("galleryPhotos", event.images.toString())
-
+*/
             }
             val optionsBundle = Bundle()
             startActivity(binding.root.context, intent, optionsBundle)
@@ -168,6 +185,7 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
         mAllEvents = events
     }*/
 
+    //Mètode obligatori
     override fun getItemCount(): Int {
         return mAllEvents.size
     }

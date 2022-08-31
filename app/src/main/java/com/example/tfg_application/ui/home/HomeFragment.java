@@ -24,6 +24,7 @@ import com.example.tfg_application.SignInActivity;
 import com.example.tfg_application.User;
 import com.example.tfg_application.databinding.FragmentHomeBinding;
 import com.example.tfg_application.ui.home.tabs.Configuration;
+import com.example.tfg_application.ui.home.tabs.SavedEvents;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         final LinearLayout preferences = binding.preferencesLayout;
         final LinearLayout configuration = binding.configurationLayout;
+        final LinearLayout savedEvents = binding.savedEventsLayout;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user!=null){
         if(user.isEmailVerified()){
@@ -66,6 +68,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v){
                 openLayout(Configuration.class);
+            }
+        });
+        savedEvents.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                openLayout(SavedEvents.class);
             }
         });
         ImageButton btnLogout = binding.btnLogout;

@@ -147,7 +147,7 @@ public class DashboardFragment extends Fragment {
                     * else, cridar al eventsRequester desde aquí sense la localització
                     * */
                     if(buscador.getText().length()>0){
-                        Log.i("proba", "no text at filter: " + buscador.getText());
+                        Log.i("proba", "text at filter: " + buscador.getText());
                         eventsRequester.setTextFilter(buscador.getText().toString());
                     }
                     if(requestPermission()) {

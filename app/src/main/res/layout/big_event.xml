@@ -61,18 +61,18 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />
 
-       <TextView
-           android:id="@+id/hourTextView"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_below="@+id/dateTextView"
-           android:layout_marginStart="15dp"
-           android:layout_marginEnd="15dp"
-           android:layout_toRightOf="@+id/dateImageView"
-           android:singleLine="true"
-           android:text="20:00 - 22:00 CEST"
-           android:textAppearance="?android:attr/textAppearanceMedium"
-           android:textColor="@android:color/black" />
+    <TextView
+        android:id="@+id/hourTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateTextView"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_toRightOf="@+id/dateImageView"
+        android:singleLine="true"
+        android:text="20:00 - 22:00 CEST"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black" />
 
    <ImageView
        android:id="@+id/locationImageView"
@@ -169,22 +169,21 @@
            android:textColor="@android:color/black"
            android:textStyle="bold" />
 
-   <ImageView
-       android:id="@+id/galleryImageView"
-       android:layout_width="match_parent"
-       android:layout_height="200dp"
-       android:layout_below="@+id/fotosTextView"
-       android:layout_gravity="center"
-       android:src="@drawable/ic_baseline_no_photography_24" />
+    <ImageView
+        android:id="@+id/galleryImageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/fotosTextView"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_baseline_no_photography_24" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_marginTop="-49dp"
-        android:layout_marginStart="25dp"
-        android:layout_height="wrap_content"
         android:id="@+id/secondImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/galleryImageView"
-        android:src="@drawable/ic_baseline_photo_library_24"
-        />
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="-49dp"
+        android:src="@drawable/ic_baseline_photo_library_24" />
 
 </RelativeLayout>

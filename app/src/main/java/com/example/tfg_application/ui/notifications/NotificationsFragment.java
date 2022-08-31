@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.tfg_application.LocationActivity;
 import com.example.tfg_application.R;
+import com.example.tfg_application.ui.dashboard.model.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -28,12 +29,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class NotificationsFragment extends Fragment implements OnMapReadyCallback{
 
+    private String TAG = "MAP";
     private FragmentNotificationsBinding binding;
     private LocationActivity locationActivity;
     private Location currentLocation;
     private GoogleMap googleMap;
     private Location moveWhenReady = null;
     private Bundle bundle;
+    private Event event;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         NotificationsViewModel notificationsViewModel = new ViewModelProvider(this).get(NotificationsViewModel.class);
@@ -56,7 +59,12 @@ public class NotificationsFragment extends Fragment implements OnMapReadyCallbac
         Bundle arguments = getArguments();
         if(arguments!=null){
             bundle = arguments;
-            Log.i("MAPAPROBA", "onCreate has arguments");
+            //Revisar: ara obtenim tot el event directament aqui
+            event = (Event) arguments.getSerializable("events");
+            moveWhenReady.setLatitude(event.location[0]);
+            moveWhenReady.setLongitude(event.location[1]);
+            Log.i("MAP", "map location: "+moveWhenReady.toString());
+            /*Log.i("MAPAPROBA", "onCreate has arguments");
             Double lat =null, lon=null;
             try{
                 lat = Double.parseDouble(arguments.getString("latitude"));
@@ -71,7 +79,7 @@ public class NotificationsFragment extends Fragment implements OnMapReadyCallbac
                 Log.i("MAP", "map location: "+location.toString());
                 moveWhenReady = location;
                 //focusCamera(location);
-            }
+            }*/
         }
     }
 
@@ -88,10 +96,14 @@ public class NotificationsFragment extends Fragment implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
         Object o = (Object) this;
-        if(moveWhenReady!=null){
+        //Revisar aquest codi quan tingui google maps a casa
+        if(event.location!=null){
+            focusCamera(moveWhenReady);
+        }
+        /*if(moveWhenReady!=null){
             Log.i("MAPAPROBA", "moveWhenReady:");
             focusCamera(moveWhenReady);
-        }else{
+        }*/else{
         locationActivity.lastLocation(o, getClass(), "focusCamera");
         Log.i("location", "currentLocation:" + currentLocation);
 
@@ -127,7 +139,8 @@ public class NotificationsFragment extends Fragment implements OnMapReadyCallbac
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(ltlg);
             //get lat and lng
-            markerOptions.title(bundle.getString("name"));
+            //markerOptions.title(bundle.getString("name"));
+            markerOptions.title(event.name);
             googleMap.addMarker(markerOptions);
         }
     }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Space
+        android:id="@+id/saved_events_space"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/saved_events_layoutRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/saved_events_space"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/white" />
+
+    <!--<include
+        android:id="@+id/small_event1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        layout="@layout/small_event"/>
+
+    <include
+        android:id="@+id/small_event2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/small_event1"
+        android:layout_marginTop="5dp"
+        layout="@layout/small_event"/>
+    <include
+        android:id="@+id/small_event3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/small_event2"
+        android:layout_marginTop="5dp"
+        layout="@layout/small_event"/>
+    <include
+        android:id="@+id/small_event4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/small_event3"
+        android:layout_marginTop="5dp"
+        layout="@layout/small_event"/>
+    <include
+        android:id="@+id/small_event5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/small_event4"
+        android:layout_marginTop="5dp"
+        layout="@layout/small_event"/>
+    <include
+        android:id="@+id/small_event6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/small_event5"
+        android:layout_marginTop="5dp"
+        layout="@layout/small_event"/>-->
+</RelativeLayout>

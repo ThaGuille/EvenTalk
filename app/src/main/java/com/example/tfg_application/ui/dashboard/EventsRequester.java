@@ -58,6 +58,8 @@ public class EventsRequester {
     //private GeoHash geoHash;
     //private JSONArray jsonArray;
 
+    private final String TAG = "eventsRequester";
+
     private Location location;
     private String radius;
     private String textFilter;
@@ -66,7 +68,7 @@ public class EventsRequester {
     private String countryCode;
 
     public void getEvent(Context context){
-        Log.i("events", "EventsRequester location " + location);
+        Log.i(TAG, "EventsRequester location " + location);
         RequestQueue queue = Volley.newRequestQueue(context);
 
         //La url es cree a partir de la query passada
@@ -91,7 +93,7 @@ public class EventsRequester {
         if(countryCode!=null){
             url+="&countryCode="+countryCode;
         }
-        Log.i("proba", url);
+        Log.i(TAG, url);
         String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -137,7 +139,7 @@ public class EventsRequester {
                 String place = null;
                 Event mEvent;
                 Event.EventBuilder mEventBuilder;
-                Log.i("events", "process Event: " + i + ": " + event);
+                Log.i(TAG, "process Event: " + i + ": " + event);
                 //witeResult(event);
                 //no cal agafar-ho a tots els events
                 int totalPages = page.getInt("totalPages");
@@ -155,7 +157,7 @@ public class EventsRequester {
                     }*/
                     mEventBuilder = new Event.EventBuilder(id, name, type, url, images);
                 }catch (Exception e){
-                    Log.i("events", "Error en la carga: " + e);
+                    Log.i(TAG, "Error en la carga: " + e);
                     throw new RuntimeException(e);
                 }
                 try {    // ---------------- FECHA ---------------------
@@ -167,7 +169,7 @@ public class EventsRequester {
                     String fechaOriginal  = localDate +" " + localTime;
                     SimpleDateFormat formatoDestino = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     Date date = formatoOrigen.parse(fechaOriginal); //format Wed Jun 15 17:00:00 GMT 2022
-                    Log.i("events", "Date parsed: " + date);
+                    Log.i(TAG, "Date parsed: " + date);
                     mEventBuilder.setEventDate(date);
                 }catch (Exception e){ Log.i("events", "Error en la carga: " + e); }
                 try{
@@ -190,12 +192,12 @@ public class EventsRequester {
                     mEventBuilder.setShortDate(Date);
                     mEventBuilder.setStartDateTime(startDateTime);
                     mEventBuilder.setEndDateTime(endDateTime);
-                }catch (Exception e){ Log.i("events", "Error en la carga: " + e); }
+                }catch (Exception e){ Log.i(TAG, "Error en la carga: " + e); }
                 try{
                     JSONArray temp = event.getJSONObject("_embedded").getJSONArray("venues");
                     place = temp.getJSONObject(0).getJSONObject("address").getString("line1");
                     mEventBuilder.setEventPlace(place);
-                }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
+                }catch (Exception e){Log.i(TAG, "Error en la carga: " + e);}
 
                 try{
                     //JSONObject temp = event.getJSONObject("_embedded").getJSONObject("priceRanges");
@@ -207,7 +209,7 @@ public class EventsRequester {
                     for(int j=0;j<temp.length();j++){
                         if(temp.getJSONObject(j).getString("type").equals("standard")){
                             foundPrice = true;
-                            Log.i("events", "IT FOUND STANDARD PRICE: ");
+                            Log.i(TAG, "IT FOUND STANDARD PRICE: ");
                             String min = temp.getJSONObject(j).getString("min");
                             String max = temp.getJSONObject(j).getString("max");
                             String currency = temp.getJSONObject(j).getString("currency");
@@ -222,10 +224,10 @@ public class EventsRequester {
                         }
                     }}
                     if(!foundPrice) mEventBuilder.setPrice("Check lick");
-                    Log.i("events", "AND IT DID NOT CRASH IT: ");
-                    Log.i("events", "TYPE: "+ temp.getJSONObject(0).getString("type"));
-                    Log.i("events", "PRICE: "+ temp.getJSONObject(0).getString("min") + " - " + temp.getJSONObject(0).getString("max"));
-                    Log.i("events", "INDEX 2: "+ temp.getString(0));
+                    Log.i(TAG, "AND IT DID NOT CRASH IT: ");
+                    Log.i(TAG, "TYPE: "+ temp.getJSONObject(0).getString("type"));
+                    Log.i(TAG, "PRICE: "+ temp.getJSONObject(0).getString("min") + " - " + temp.getJSONObject(0).getString("max"));
+                    Log.i(TAG, "INDEX 2: "+ temp.getString(0));
 
                 }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
                 try{
@@ -239,7 +241,7 @@ public class EventsRequester {
                     location = mLocation;
                     //Log.i("events", "location Location: " + mLocation);
                     mEventBuilder.setEventLocation(location);
-                }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
+                }catch (Exception e){Log.i(TAG, "Error en la carga: " + e);}
 
                 mEvent = new Event(mEventBuilder);
                 mAllEvents[i] = mEvent;
