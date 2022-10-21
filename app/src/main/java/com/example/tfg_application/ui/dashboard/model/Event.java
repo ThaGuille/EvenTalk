@@ -2,6 +2,7 @@ package com.example.tfg_application.ui.dashboard.model;
 
 import android.location.Location;
 import android.util.Log;
+import android.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,9 +23,8 @@ public class Event implements Serializable {
     public String images;
     public String mainImage;
     public double distance = -1;
-    //public Location location;
+    //public Location location; no es serializable
     public Double[] location = new Double[2];
-    //public Double longitude;
     public Date date;
     public String shortDate;
     public String startDateTime;
@@ -75,8 +75,8 @@ public class Event implements Serializable {
         private String images;
         private String mainImage;
         private double distance;
-        //private Location location;
-        public Double[] location;
+        //private Location location;  no es pot perque no es Serializable
+        public Double[] location = new Double[2];
         private Date date;
         private String place;
         public String shortDate;
@@ -115,9 +115,6 @@ public class Event implements Serializable {
 
 
         //Per posar valors un a un
-        public Event build(){
-            return new Event(this);
-        }
 
         public EventBuilder(){}
 
@@ -155,8 +152,10 @@ public class Event implements Serializable {
             return this;
         }
         public EventBuilder setEventLocation(Location location) {
+            Log.i("Event", "EVENT LOCATION:" + location);
             this.location[0] = location.getLatitude();
             this.location[1] = location.getLongitude();
+            Log.i("Event", "EVENT LOCATION LATITUDE:" + this.location[0]);
             //this.location = location;
             return this;
         }
@@ -187,6 +186,9 @@ public class Event implements Serializable {
         public EventBuilder setPrice(String price){
             this.price = price;
             return this;
+        }
+        public Event build(){
+            return new Event(this);
         }
 
         /*public EventBuilder tryToPasrseAll(String fullEvent) {
@@ -264,7 +266,7 @@ public class Event implements Serializable {
         }*/
 
         //Si no funcione, cambiar les posicions 1 i 2 per 0 i 1. Sino guardar la location com string i ya
-        public static Location locationFromString(String location){
+       /* public static Location locationFromString(String location){
             if (location != null && (location.contains(","))) {
                 Location result = new Location("Generated_location");
                 String[] locationStrings = location.split(",");
@@ -274,12 +276,11 @@ public class Event implements Serializable {
                     return result;
                 } else { return null; }
             } else  return null;
-        }
+        }*/
     }
 
     //Per posar valors amb un objecte eventBuilder
     public Event(EventBuilder builder) {
-        Log.i("Event", "building event after EventBuilder");
         this.id = builder.id;
         this.name = builder.name;
         this.type = builder.type;
@@ -287,7 +288,6 @@ public class Event implements Serializable {
         this.images = builder.images;
         this.mainImage = builder.mainImage;
         this.distance = builder.distance;
-        //this.location = builder.location;
         this.description = builder.description;
         this.date = builder.date;
         this.shortDate = builder.shortDate;

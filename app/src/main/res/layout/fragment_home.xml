@@ -30,7 +30,7 @@
             android:textSize="12sp"
             android:textStyle="bold" />-->
         <LinearLayout
-            android:id="@+id/profile_layout"
+            android:id="@+id/top_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="0dp"
@@ -39,13 +39,15 @@
             android:clickable="true">
 
             <ImageView
+                android:id="@+id/profile_image"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_weight="2"
-                android:src="@drawable/ic_baseline_person_24"
-                android:scaleY="3"
-                android:scaleX="3"
+                android:src="@drawable/ic_baseline_person_36"
+
+                android:scaleY="2"
+                android:scaleX="2"
                 />
             <LinearLayout
                 android:id="@+id/nameAndEmail"
@@ -63,7 +65,7 @@
                     android:layout_weight="2"
                     android:gravity="bottom|start"
                     android:hint=""
-                    android:textColorHint="@color/colorRed"
+                    android:textColorHint="@color/colorScarletRed"
                     android:textSize="14sp"
                     android:textStyle="bold" />
                 <TextView
@@ -73,7 +75,7 @@
                     android:layout_marginTop="0dp"
                     android:layout_weight="2"
                     android:gravity="center|start"
-                    android:hint="Guillem Arbiol"
+                    android:hint=""
                     android:textColorHint="@color/black"
                     android:textSize="26sp"
                     android:textStyle="bold" />
@@ -87,7 +89,9 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:src="@drawable/ic_baseline_logout_24"
+                app:tint="@color/owl_blue_analog_orange"
                 android:background="@color/transparent"
+
                 android:scaleY="1.5"
                 android:scaleX="1.5"
                 />
@@ -100,7 +104,7 @@
             android:layout_weight="4"
             android:background="@color/whiteGrey"
             android:gravity="bottom|start"
-            android:hint="  CUENTA"
+            android:hint="@string/home_account_label"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,20 +112,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/preferences_layout"
+            android:id="@+id/profile_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="0dp"
             android:layout_weight="4"
             android:orientation="horizontal"
             android:gravity="center|start"
-            android:clickable="true">
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                app:tint="@color/owl_blue_satured_clear"
                 android:src="@drawable/ic_baseline_person_24" />
             <TextView
                 android:layout_width="0dp"
@@ -129,7 +135,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_weight="4"
                 android:gravity="center|start"
-                android:hint="Preferencias"
+                android:hint="@string/home_preferences"
                 android:textColorHint="@color/black"
                 android:textSize="20sp" />
             <ImageView
@@ -137,6 +143,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                app:tint="@color/owl_blue_satured_clear"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
         </LinearLayout>
 
@@ -149,21 +156,23 @@
             android:orientation="horizontal"
             android:gravity="center|start"
             android:textSize="20sp"
-            android:clickable="true">
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_person_24" />
+                app:tint="@color/owl_blue_satured_clear"
+                android:src="@drawable/ic_baseline_settings_24" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="4"
                 android:gravity="center|start"
-                android:hint="Configuración"
+                android:hint="@string/home_configuration"
                 android:textColorHint="@color/black"
                 android:textSize="20sp" />
             <ImageView
@@ -171,6 +180,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                app:tint="@color/owl_blue_satured_clear"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
 
 
@@ -185,21 +195,23 @@
             android:orientation="horizontal"
             android:textSize="20sp"
             android:gravity="center|start"
-            android:clickable="true">
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_person_24" />
+                app:tint="@color/owl_blue_satured_clear"
+                android:src="@drawable/ic_baseline_workspace_premium_24" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="4"
                 android:gravity="center|start"
-                android:hint="Conviértete en pro*"
+                android:hint="@string/home_premium"
                 android:textColorHint="@color/black"
                 android:textSize="20sp" />
             <ImageView
@@ -207,6 +219,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                app:tint="@color/owl_blue_satured_clear"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
         </LinearLayout>
 
@@ -220,7 +233,7 @@
             android:layout_weight="4"
             android:background="@color/whiteGrey"
             android:gravity="bottom|start"
-            android:hint="  GESTIONAR EVENTOS"
+            android:hint="@string/home_manage_events_label"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -236,21 +249,23 @@
             android:orientation="horizontal"
             android:textSize="20sp"
             android:gravity="center|start"
-            android:clickable="true">
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_person_24" />
+                app:tint="@color/owl_blue_satured_clear"
+                android:src="@drawable/ic_baseline_event_24" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="4"
                 android:gravity="center|start"
-                android:hint="Eventos guardados"
+                android:hint="@string/home_saved_events"
                 android:textColorHint="@color/black"
                 android:textSize="20sp" />
             <ImageView
@@ -258,6 +273,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                app:tint="@color/owl_blue_satured_clear"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
         </LinearLayout>
         <LinearLayout
@@ -269,6 +285,7 @@
             android:orientation="horizontal"
             android:textSize="20sp"
             android:gravity="center|start"
+            android:focusable="true"
             android:clickable="true">
 
             <ImageView
@@ -276,14 +293,15 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_person_24" />
+                app:tint="@color/owl_blue_satured_clear"
+                android:src="@drawable/ic_baseline_event_repeat_24" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="4"
                 android:gravity="center|start"
-                android:hint="Eventos anteriores"
+                android:hint="@string/home_previous_events"
                 android:textColorHint="@color/black"
                 android:textSize="20sp" />
             <ImageView
@@ -291,6 +309,7 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                app:tint="@color/owl_blue_satured_clear"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
         </LinearLayout>
 
@@ -304,7 +323,7 @@
             android:layout_weight="4"
             android:background="@color/whiteGrey"
             android:gravity="bottom|start"
-            android:hint="  AYUDA"
+            android:hint="@string/home_help_label"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -319,21 +338,23 @@
             android:orientation="horizontal"
             android:textSize="20sp"
             android:gravity="center|start"
-            android:clickable="true">
+            android:clickable="true"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_person_24" />
+                app:tint="@color/owl_blue_satured_clear"
+                android:src="@drawable/ic_baseline_help_24" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="4"
                 android:gravity="center|start"
-                android:hint="¿Necesitas ayuda?"
+                android:hint="@string/home_help"
                 android:textColorHint="@color/black"
                 android:textSize="20sp" />
             <ImageView
@@ -341,19 +362,9 @@
                 android:layout_height="20dp"
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
+                app:tint="@color/owl_blue_satured_clear"
                 android:src="@drawable/ic_baseline_arrow_forward_ios_24" />
         </LinearLayout>
-
-        <!-- Amb aquest codi podem generar estructures de manera
-         molt senzilla, pero si volem accedir despres als seus
-         components, com la img, el text, el onClick... ens hem de
-         complicar massa. Millor com està.
-         -->
-
-        <!--
-        <include android:id="@+id/help2"
-            layout="@layout/horizontalayout"
-            />-->
 
         <Space
             android:layout_width="match_parent"
@@ -382,174 +393,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
+            </LinearLayout>-->
 
-            </LinearLayout>
-            -->
-
-    <!--  Aquí el sistema amb img+text+img
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
-        android:textSize="20sp"
-        android:orientation="horizontal">
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_baseline_person_24"
-        android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        />
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColorHint="@color/black"
-        android:layout_marginTop="20dp"
-        android:hint="Guillem Arbiol"/>
-    </LinearLayout>-->
-
-    <!-- TITULO CUENTA -->
-    <!--<TextView
-        android:background="@color/whiteGrey"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="0dp"
-        android:gravity="bottom|start"
-        android:textSize="16sp"
-        android:textStyle="bold"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:hint="  CUENTA"
-        app:layout_constraintTop_toTopOf="parent" />
--->
-    <!-- APARTADOS CUENTA -->
-    <!--<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:layout_marginTop="120dp"
-        android:textSize="20sp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_person_24"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="4"
-            android:textSize="18sp"
-            android:gravity="center|start"
-            android:textColorHint="@color/black"
-            android:layout_marginTop="10dp"
-            android:hint="Preferencias"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-            android:layout_weight="1"
-            android:scaleY="0.7"
-            android:scaleX="0.7"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="160dp"
-        android:textSize="20sp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_person_24"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="4"
-            android:textSize="18sp"
-            android:gravity="center|start"
-            android:textColorHint="@color/black"
-            android:layout_marginTop="10dp"
-            android:hint="Configuración"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-            android:layout_weight="1"
-            android:scaleY="0.7"
-            android:scaleX="0.7"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="200dp"
-        android:textSize="20sp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_person_24"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="4"
-            android:textSize="18sp"
-            android:gravity="center|start"
-            android:textColorHint="@color/black"
-            android:layout_marginTop="10dp"
-            android:hint="Conviértete en pro*"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-            android:layout_weight="1"
-            android:scaleY="0.7"
-            android:scaleX="0.7"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>-->
-
-
-    <!-- TITULO EVENTOS -->
-    <!--<TextView
-        android:background="@color/whiteGrey"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="0dp"
-        android:gravity="bottom|start"
-        android:textSize="16sp"
-        android:textStyle="bold"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:hint="  GESTIONAR EVENTOS"
-        app:layout_constraintTop_toTopOf="parent" />
-        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,25 +43,18 @@ public class Configuration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         TextView textDeleteAccount = findViewById(R.id.textDeleteAccount);
-        SpannableString deleteAccountUnderline = new SpannableString("Borrar cuenta de EvenTalk");
+        SpannableString deleteAccountUnderline = new SpannableString(getResources().getString(R.string.Borrar_cuenta));
         deleteAccountUnderline.setSpan(new UnderlineSpan(),0,deleteAccountUnderline.length(),0);
         textDeleteAccount.setText(deleteAccountUnderline);
         textDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteAccount();
+                revokeAcces();
             }
         });
-        ImageView goBack = findViewById(R.id.arrow_back);
-        goBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goBack();
-            }
-        });
+
     }
 
     @Override
@@ -72,12 +66,10 @@ public class Configuration extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
     private void initilizeToolbar(Menu menu){
-        Log.i("taskbar", "wtf");
-        //menu.findItem(R.id.go_back).setEnabled(false);
-        //menu.findItem(R.id.go_back).setChecked(true);
-        //menu.findItem(R.id.proba).setVisible(false);
-        //Log.i("taskbar", "paso 0");
+        menu.findItem(R.id.toolbarButtonFav).setVisible(false);
+        menu.findItem(R.id.toolbarButtonShare).setVisible(false);
 
+        //això ho deixo per la posterioritat, ere per posar la flecha a la esquerra
         //ERROR A LA SEGUENT LINIA
         /*getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
                 ActionBar.DISPLAY_SHOW_CUSTOM);*/
@@ -96,13 +88,19 @@ public class Configuration extends AppCompatActivity {
 
     }
 
-    //Revisar: el intent no es necessari ya que usem el activity stack per tornar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.go_back) {
+            goBack();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void goBack() {
-        //Intent intent = new Intent(this, MainActivity.class);
-        //startActivity(intent);
         finish();
     }
-    private void deleteAccount(){
+
+    private void revokeAcces(){
         mAuth.signOut();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(com.firebase.ui.auth.R.string.default_web_client_id))

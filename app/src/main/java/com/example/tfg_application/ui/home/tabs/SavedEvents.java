@@ -45,38 +45,24 @@ public class SavedEvents  extends AppCompatActivity {
         adapter = new EventAdapter(mEventList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //setContentView(R.layout.activity_saved_events);
-        //SmallEventBinding seb1 =  binding.smallEvent1;
-        //seb1.eventButtonChat
         sharedPref = getSharedPreferences("com.example.tfg_application.saved_events", Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         mEventList.clear();
-        //Obtenim totes les claus (id) dels events que tenim guardats
-        //Vull guardar events com a tal i no cam a fking Strings.
 
-        Map<String, ?> evento1 = sharedPref.getAll();
-        for(Map.Entry<String, ?> x:evento1.entrySet()){
-            //i passem estes llistes a classe Events
+        //Obtenim totes les claus (id) dels events que tenim guardats
+        //I creem una llista d'events amb
+        Map<String, ?> eventos = sharedPref.getAll();
+        for(Map.Entry<String, ?> x:eventos.entrySet()){
             Log.i(TAG, "key:  "+ x.getKey());
             Log.i(TAG, "value:  "+ x.getValue());
-            //Event mEvent;
-            //Event.EventBuilder mEventBuilder;
-            //mEventBuilder = new Event.EventBuilder();
-            //mEventBuilder.tryToPasrseAll((String) x.getValue());
-            //mEvent = new Event(mEventBuilder);
+
             Gson gson = new Gson();
-            //String json = sharedPref.getString(x.getKey(), "fail");
             String jsonEvent = (String) x.getValue();
             if(jsonEvent==null){ return;}
             Event mEvent = gson.fromJson(jsonEvent, Event.class);
             Log.i(TAG, "event with json name " + mEvent.name);
             mEventList.add(mEvent);
         }
-
-            //mEventList.add(mEvent);
-            //System.out.println(x.getKey());
-            //System.out.println(x.getValue());
-
         adapter.notifyDataSetChanged();
     }
 
@@ -86,6 +72,10 @@ public class SavedEvents  extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar, menu);
         initilizeToolbar(menu);
+        MenuItem favItem = menu.findItem(R.id.toolbarButtonFav);
+        favItem.setVisible(false);
+        MenuItem shareItem = menu.findItem(R.id.toolbarButtonShare);
+        shareItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
     @Override

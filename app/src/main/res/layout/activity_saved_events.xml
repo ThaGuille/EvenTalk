@@ -6,7 +6,7 @@
     <Space
         android:id="@+id/saved_events_space"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="20dp"
         android:layout_alignParentTop="true" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -17,46 +17,5 @@
         android:layout_marginTop="0dp"
         android:background="@android:color/white" />
 
-    <!--<include
-        android:id="@+id/small_event1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        layout="@layout/small_event"/>
 
-    <include
-        android:id="@+id/small_event2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/small_event1"
-        android:layout_marginTop="5dp"
-        layout="@layout/small_event"/>
-    <include
-        android:id="@+id/small_event3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/small_event2"
-        android:layout_marginTop="5dp"
-        layout="@layout/small_event"/>
-    <include
-        android:id="@+id/small_event4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/small_event3"
-        android:layout_marginTop="5dp"
-        layout="@layout/small_event"/>
-    <include
-        android:id="@+id/small_event5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/small_event4"
-        android:layout_marginTop="5dp"
-        layout="@layout/small_event"/>
-    <include
-        android:id="@+id/small_event6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/small_event5"
-        android:layout_marginTop="5dp"
-        layout="@layout/small_event"/>-->
 </RelativeLayout>

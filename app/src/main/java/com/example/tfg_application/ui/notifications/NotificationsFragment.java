@@ -1,6 +1,7 @@
 package com.example.tfg_application.ui.notifications;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,14 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.example.tfg_application.LocationActivity;
 import com.example.tfg_application.R;
+import com.example.tfg_application.RegisterActivity;
+import com.example.tfg_application.ui.dashboard.EventsRequester;
 import com.example.tfg_application.ui.dashboard.model.Event;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,59 +38,58 @@ import com.example.tfg_application.databinding.FragmentNotificationsBinding;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NotificationsFragment extends Fragment implements OnMapReadyCallback{
 
-    private String TAG = "MAP";
+    private String TAG = "NotificationsFragment";
     private FragmentNotificationsBinding binding;
     private LocationActivity locationActivity;
-    private Location currentLocation;
+    private Double[] currentLocation = new Double[2];
+    private Double[] searchLocation = new Double[2];
     private GoogleMap googleMap;
-    private Location moveWhenReady = null;
-    private Bundle bundle;
+    private Double[] eventLocation = new Double[2];
+    //private Location moveWhenReady = null;
+    private Bundle arguments;
     private Event event;
+    private EventsRequester eventsRequester;
+    private static List<Event> mEventList = new ArrayList<>();
+    private Boolean findEvents = false;
+    ActivityResultLauncher<Intent> launchSomeActivity;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         NotificationsViewModel notificationsViewModel = new ViewModelProvider(this).get(NotificationsViewModel.class);
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        //SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps);
         mapFragment.getMapAsync(this);
         locationActivity = new LocationActivity(getContext(), getActivity());
-        //final TextView textView = binding.textNotifications;
-        //notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        eventsRequester = new EventsRequester();
+
+        binding.mapsSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LatLng cameraPositionLatLng = googleMap.getCameraPosition().target;
+                searchLocation[0] = cameraPositionLatLng.latitude;
+                searchLocation[1] = cameraPositionLatLng.longitude;
+                findNearEvents();
+            }
+        });
         return root;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        Bundle arguments = getArguments();
+        arguments = getArguments();
         if(arguments!=null){
-            bundle = arguments;
-            //Revisar: ara obtenim tot el event directament aqui
-            event = (Event) arguments.getSerializable("events");
-            moveWhenReady.setLatitude(event.location[0]);
-            moveWhenReady.setLongitude(event.location[1]);
-            Log.i("MAP", "map location: "+moveWhenReady.toString());
-            /*Log.i("MAPAPROBA", "onCreate has arguments");
-            Double lat =null, lon=null;
-            try{
-                lat = Double.parseDouble(arguments.getString("latitude"));
-                lon = Double.parseDouble(arguments.getString("longitude"));
-            }catch(Exception e){
-                Log.e("MAP", e.getMessage());
+            event = (Event) arguments.getSerializable("event");
+            Log.i(TAG, "EVENT: " + event.name);
+            if(event.location!=null){
+                eventLocation = event.location;
             }
-            if(lat!=null && lon!=null) {
-                Location location = new Location("event");
-                location.setLatitude(lat);
-                location.setLongitude(lon);
-                Log.i("MAP", "map location: "+location.toString());
-                moveWhenReady = location;
-                //focusCamera(location);
-            }*/
         }
     }
 
@@ -96,54 +106,88 @@ public class NotificationsFragment extends Fragment implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap = googleMap;
         Object o = (Object) this;
-        //Revisar aquest codi quan tingui google maps a casa
-        if(event.location!=null){
-            focusCamera(moveWhenReady);
+        //Si s'ha passat un event com a parametre (s'ha obert el mapa a traves d'un event)
+        if(arguments!=null || eventLocation[0] != null || eventLocation[1] != null){
+            focusCamera(eventLocation[0], eventLocation[1]);
         }
-        /*if(moveWhenReady!=null){
-            Log.i("MAPAPROBA", "moveWhenReady:");
-            focusCamera(moveWhenReady);
-        }*/else{
+        else{
+        findEvents =true;
         locationActivity.lastLocation(o, getClass(), "focusCamera");
-        Log.i("location", "currentLocation:" + currentLocation);
-
-        if(currentLocation!=null) {
-            Log.i("MAPAPROBA", "moveToLLEIDA:");
-            LatLng ltlg = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ltlg, 20));
-        }}
+        }
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
-                //get lat and lng
                 markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-                googleMap.clear();
+                //googleMap.clear();
                 //make zoom
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-                //googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng);
-                //add red market
                 googleMap.addMarker(markerOptions);
             }
         });
     }
 
-    public void focusCamera(Location location){
-        Log.i("MAPAPROBA", "focusCamera :" + location);
-        currentLocation = location;
-        LatLng ltlg = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        Log.i("MAPAPROBA", "latlong:" + ltlg);
+    //Sí, usem un Double[2] (currentLocation), un Location (location) i un LatLong (ltlg). ª
+    public void focusCamera(Double latitude, Double longitude){
+        if(latitude == null || longitude == null) return;
+        currentLocation[0] = latitude;
+        currentLocation[1] = longitude;
+        if(findEvents){
+            searchLocation[0] = latitude;
+            searchLocation[1] = longitude;
+            findNearEvents();
+        }
+        Log.i(TAG, "focusCamera on :" + latitude + ", "+ longitude);
+        LatLng ltlg = new LatLng(latitude,longitude);
+        //zoom de 2.0 a 21.0, no especifique escala
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ltlg, 13));
-        if(moveWhenReady!=null) {
+        if(eventLocation!=null) {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(ltlg);
-            //get lat and lng
-            //markerOptions.title(bundle.getString("name"));
             markerOptions.title(event.name);
             googleMap.addMarker(markerOptions);
         }
     }
+
+    public void setEventPoints(Event[] events){
+    }
+
+    private void findNearEvents(){
+        Location location = new Location("");
+        location.setLatitude(searchLocation[0]);
+        location.setLongitude(searchLocation[1]);
+        eventsRequester.setLocation(location);
+        eventsRequester.setRadius(500);
+        eventsRequester.setProcedence("map");
+        eventsRequester.setMethodParams((Object) NotificationsFragment.this, NotificationsFragment.class, "getNearEvents");
+        eventsRequester.getEvent(getContext());
+    }
+
+    public void getNearEvents(List<Event> events){
+        if(events.size()==0){
+            Log.i(TAG, "no se encontraron eventos ");
+            Toast.makeText( getContext(),"No se ha encontrado ningún evento cerca", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Log.i(TAG, "not empty? ");
+        for (Event item: events) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            LatLng ltlg = new LatLng(item.location[0],item.location[1]);
+            markerOptions.position(ltlg);
+            markerOptions.title(item.name);
+            googleMap.clear();
+            googleMap.addMarker(markerOptions);
+            Log.i(TAG, "marker "+ item.name + " + set at: " + ltlg.toString());
+        }
+    }
+
+    /*public void openWorkerActivity() {
+        WorkRequest uploadWorkRequest =
+                new OneTimeWorkRequest.Builder(LocationActivity.class)
+                        .build();
+        WorkManager.getInstance(getContext()).enqueue(uploadWorkRequest);
+    }*/
 
     @Override
     public void onDestroyView() {

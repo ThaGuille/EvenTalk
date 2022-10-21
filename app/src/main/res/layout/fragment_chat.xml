@@ -44,7 +44,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="@drawable/edit_text_shadow"
-            android:hint="Say something..."
+            android:hint="@string/chat_write_text"
             android:inputType="text"
             android:padding="10dp" />
 

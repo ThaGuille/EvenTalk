@@ -26,19 +26,19 @@
             android:layout_gravity="end"
             android:gravity="end"
             android:icon="@drawable/ic_baseline_arrow_back_24"
-            android:title="back"
+            android:title="@string/toolbar_back"
             app:showAsAction="always" />
         <item
             android:id="@+id/toolbarButtonFav"
             android:layout_gravity="end"
             android:gravity="end"
             android:icon="@drawable/ic_baseline_favorite_border_24"
-            android:title="favourites"
+            android:title="@string/toolbar_favourites"
             app:showAsAction="always" />
         <item
             android:id="@+id/toolbarButtonShare"
             android:icon="@drawable/ic_baseline_share_24"
-            android:title="share"
+            android:title="@string/toolbar_share"
             app:showAsAction="always"
             />
         <!--<item

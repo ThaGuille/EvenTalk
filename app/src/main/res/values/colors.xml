@@ -23,4 +23,30 @@
     <color name="colorBlue">#2962FF</color>
     <color name="colorRed">#FF6347</color>
 
+    <color name="colorRoyalBlue">#246EE9</color>
+    <color name="colorScarletRed">#FF0000</color>
+
+    <color name="colorStrikingPink">#FFC5F3</color>
+    <color name="colorMintGreen">#3EB489</color>
+
+
+    <color name="owl_blue">#0336FF</color>
+    <color name="owl_blue2">#002ee6</color>
+    <color name="owl_blue3">#335cff</color>
+    <color name="owl_blue4">#0024b3</color>
+    <color name="owl_blue_satured">#636fa1</color>
+    <color name="owl_blue_satured2">#4268FF</color>
+    <color name="owl_blue_satured_clear">#819BFF</color>
+    <color name="owl_blue_analog_orange">#FF4E03</color>
+    <color name="owl_yellow">#FFDE03</color>
+
+    <color name="reply_blue_600">#4A6572</color>
+    <color name="reply_blue_700">#344955</color>
+    <color name="reply_blue_800">#232F34</color>
+    <color name="reply_orange">#F9AA33</color>
+
+    <color name="teal_green">#03DAC5</color>
+
+
+
 </resources>

@@ -1,4 +1,4 @@
-<vector android:height="36dp" android:tint="?attr/colorControlNormal"
+<vector android:height="36dp" android:tint="@color/owl_blue_satured_clear"
     android:viewportHeight="24" android:viewportWidth="24"
     android:width="36dp"
     xmlns:android="http://schemas.android.com/apk/res/android">

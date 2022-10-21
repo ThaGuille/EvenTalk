@@ -1,10 +1,45 @@
 <resources>
     <string name="app_name">EvenTalk</string>
-    <string name="title_home">Home</string>
-    <string name="title_events">Events</string>
-    <string name="title_map">Map</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_events">Eventos</string>
+    <string name="title_map">Mapa</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_notifications">Notificaciones</string>
     <string name="title_chat">Chat</string>
     <string name="string_probes">Proving</string>
+
+
+    //Home pages
+    <string name="home_preferences">Perfil</string>
+    <string name="home_configuration">Configuración</string>
+    <string name="home_premium">Conviértete en pro*</string>
+    <string name="home_saved_events">Eventos guardados</string>
+    <string name="home_previous_events">Eventos anteriores</string>
+    <string name="home_help">¿Necesitas ayuda?</string>
+
+    //Els \u00A0 són espais en unicode
+    <string name="home_account_label">\u00A0\u00A0CUENTA</string>
+    <string name="home_manage_events_label">\u00A0\u00A0GESTIONAR EVENTOS</string>
+    <string name="home_help_label">\u00A0\u00A0AYUDA</string>
+
+    <string name="home_email_not_verified">Email no verificado</string>
+
+    <string name="Borrar_cuenta">Borrar cuenta de EvenTalk</string>
+
+
+    //Events
+    <string name="events_search_event">buscar evento</string>
+    <string name="events_sort_popularity">Populares</string>
+    <string name="events_sort_proximity">Cercanía</string>
+    <string name="events_sort_date">Fecha</string>
+
+    //Chat
+    <string name="chat_write_text">Escribe algo...</string>
+
+    //Toolbar
+    <string name="toolbar_back">Back</string>
+    <string name="toolbar_favourites">Favourites</string>
+    <string name="toolbar_share">Share</string>
+
+
 </resources>

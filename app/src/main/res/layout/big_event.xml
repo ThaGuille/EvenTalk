@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
     <!-- img height ideal 3:2 = 420:280, pero quede molt alta
 
     -->
     <ImageView
         android:id="@+id/topImageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/ic_baseline_no_photography_24" />
     <!--
@@ -38,15 +39,24 @@
            android:textColor="@android:color/black"
            android:textStyle="bold" />
 
-       <ImageView
-           android:id="@+id/dateImageView"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_below="@+id/titleTextView"
-           android:layout_gravity="center"
-           android:layout_marginStart="15dp"
-           android:layout_marginTop="10dp"
-           android:src="@drawable/ic_baseline_calendar_today_36" />
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorLightGray"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">-->
+
+
+    <ImageView
+        android:id="@+id/dateImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_baseline_calendar_today_36" />
 
     <TextView
         android:id="@+id/dateTextView"
@@ -55,13 +65,14 @@
         android:layout_alignTop="@+id/dateImageView"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginTop="6dp"
         android:layout_toRightOf="@+id/dateImageView"
         android:singleLine="true"
-        android:text="miércoles, julio 13, 2022"
+        android:text="2022-10-25"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/hourTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,25 +83,26 @@
         android:singleLine="true"
         android:text="20:00 - 22:00 CEST"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black" />-->
 
-   <ImageView
-       android:id="@+id/locationImageView"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_below="@+id/hourTextView"
-       android:layout_gravity="center"
-       android:layout_marginStart="15dp"
-       android:layout_marginTop="15dp"
-       android:layout_marginEnd="15dp"
-       android:src="@drawable/ic_baseline_location_on_36" />
+    <ImageView
+        android:id="@+id/locationImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateImageView"
+        android:layout_gravity="center"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/ic_baseline_location_on_36" />
 
     <TextView
         android:id="@+id/locationTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/hourTextView"
+        android:layout_alignStart="@+id/dateTextView"
         android:layout_alignTop="@+id/locationImageView"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="15dp"
         android:layout_toRightOf="@+id/locationImageView"
         android:singleLine="true"
@@ -114,9 +126,10 @@
         android:id="@+id/priceTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/hourTextView"
+        android:layout_alignStart="@+id/dateTextView"
         android:layout_alignTop="@+id/priceImageView"
         android:layout_marginEnd="15dp"
+        android:layout_marginTop="6dp"
         android:layout_toRightOf="@+id/priceImageView"
         android:singleLine="true"
         android:text="Gratis, en Ticketmaster"

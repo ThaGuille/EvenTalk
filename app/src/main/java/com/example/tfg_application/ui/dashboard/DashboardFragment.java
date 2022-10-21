@@ -60,8 +60,11 @@ import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
 
+
+    private String TAG = "DashboardFragment";
     private FragmentDashboardBinding binding;
     private LinearLayout.LayoutParams param1, param2;
+    private String sorting = "relevance";
     private EventsRequester eventsRequester;
     private LocationManager locationManager;
     private Location mLastLocation;
@@ -81,7 +84,6 @@ public class DashboardFragment extends Fragment {
 
         //RecyclerView binding
         recyclerView = binding.eventRecyclerView;
-
         adapter = new EventAdapter(mEventList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -92,6 +94,7 @@ public class DashboardFragment extends Fragment {
         param1 = (LinearLayout.LayoutParams) binding.underline1.getLayoutParams();
         param2 = (LinearLayout.LayoutParams) binding.underline2.getLayoutParams();
         eventsRequester = new EventsRequester();
+        eventsRequester.setProcedence("events");
         locationActivity = new LocationActivity(getContext(), getActivity());
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
 
@@ -103,19 +106,34 @@ public class DashboardFragment extends Fragment {
         popular.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(sorting.equals("relevance"))
+                    return;
                 setUnderlineActive(binding.underline1);
+                sorting = "relevance";
+                setBasicFilters();
+                Log.i(TAG, "sorting by relevance");
+                eventsRequester.getEvent(getContext());
             }
         });
         final View distance = binding.orderByDistance;
         distance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(sorting.equals("distance"))
+                    return;
+                if(requestPermission()) {
                 setUnderlineActive(binding.underline2);
-                NavOptions navOptions = new NavOptions.Builder()
+                sorting = "distance";
+                setBasicFilters();
+                Log.i(TAG, "sorting by distance");
+                Object o2 = (Object)  DashboardFragment.this;
+                    locationActivity.lastLocation(o2, DashboardFragment.class, "getLocation");
+                }
+                /*NavOptions navOptions = new NavOptions.Builder()
                         .setPopUpTo(R.id.navigation_events, true)
                         .build();
                 Bundle bundle = new Bundle();
-                Navigation.findNavController(v).navigate(R.id.action_navigation_events_to_navigation_chat, bundle, navOptions);
+                Navigation.findNavController(v).navigate(R.id.action_navigation_events_to_navigation_chat, bundle, navOptions);*/
                 //Navigation.findNavController(v).clearBackStack(R.id.action_navigation_events_to_navigation_chat);
                 /*Class classe = ChatFragment.class;
                 Intent intent = new Intent(getContext(), classe);
@@ -126,7 +144,13 @@ public class DashboardFragment extends Fragment {
         recommended.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(sorting.equals("date"))
+                    return;
                 setUnderlineActive(binding.underline3);
+                sorting = "date";
+                setBasicFilters();
+                Log.i(TAG, "sorting by date");
+                eventsRequester.getEvent(getContext());
             }
         });
 
@@ -146,17 +170,14 @@ public class DashboardFragment extends Fragment {
                     * if tenim permisos de localització (suposo que tmb es pot cridar directament i comprovar-ho allí, depenent del resultat), el sistema actual i return
                     * else, cridar al eventsRequester desde aquí sense la localització
                     * */
-                    if(buscador.getText().length()>0){
-                        Log.i("proba", "text at filter: " + buscador.getText());
-                        eventsRequester.setTextFilter(buscador.getText().toString());
-                    }
-                    if(requestPermission()) {
-                        Log.i("proba", "location permission passed");
+
+                    /*if(requestPermission()) {
+                        Log.i(TAG, "location permission passed");
                         //eventsRequester.setCountryCode("ES");
                         locationActivity.lastLocation(o2, DashboardFragment.class, "getLocation");
                         return true;
-                    }
-                    Log.i("proba", "NO DEBERÍA ESTAR VIENDO ESTO");
+                    }*/
+                    setBasicFilters();
                     eventsRequester.getEvent(getContext());
                     //eventsRequester.getEvent(buscador.getText().toString(), context, mLastLocation);
                     return true;
@@ -169,22 +190,36 @@ public class DashboardFragment extends Fragment {
     }
 
     //Mètode cridat desde LocationActivity per retornar la localització
-    public void getLocation(Location location){
-        Log.i("proba", "estem al getLocation");
+    public void getLocation(Double latitude, Double longitude){
+        Log.i(TAG, "estem al getLocation");
         //-------Revisar: sa de passar latLong a geoHash ------------------
         //String geoHash = GeoHash.encodeGeohash(lat, lon, 8);
-        mLastLocation = location;
+        Location locTemp = new Location("nom");
+        locTemp.setLatitude(latitude);
+        locTemp.setLongitude(longitude);
+        mLastLocation = locTemp;
         LatLng ltlg = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         EditText buscador = binding.textSearchEvents;
-        Log.i("events", "al getLocation" + mLastLocation);
+        Log.i(TAG, "al getLocation" + mLastLocation);
         eventsRequester.setLocation(mLastLocation);
-        //eventsRequester.setRadius(100);
+        //Actualment passem un radi predeterminat de 1000km pk a espanya hi ha poca cosa (res)
+        //Quan es tinguin més events o alguna solució ja es farà que ho pugui determinar l'usuari
+        eventsRequester.setRadius(1000);
         eventsRequester.getEvent(getContext());
     }
 
-
+    //Tmb esta al LocationActivity, pero com android studio fa coses rares millor tenir-ho repetit
     private boolean requestPermission(){
         return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void setBasicFilters(){
+        EditText buscador = binding.textSearchEvents;
+        if(buscador.getText().length()>0){
+            eventsRequester.setTextFilter(buscador.getText().toString());
+        }
+        eventsRequester.setProcedence("events");
+        eventsRequester.setSorting(sorting);
     }
 
     private void setUnderlineActive(View v){
@@ -205,6 +240,9 @@ public class DashboardFragment extends Fragment {
         List<Event> eventList = Arrays.asList(events);
         mEventList.clear();
         mEventList.addAll(eventList);
+        Log.i("EventAdapter", "event passing from dashboard: " + events[0].toJSONObject().toString());
+        //Log.i("EventAdapter", "event passing from dashboard: " + events[1].toJSONObject().toString());
+        //Log.i("EventAdapter", "event passing from dashboard: " + events[2].toJSONObject().toString());
         adapter.notifyDataSetChanged();
     }
 

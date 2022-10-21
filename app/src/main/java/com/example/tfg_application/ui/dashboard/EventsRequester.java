@@ -24,16 +24,29 @@ import com.android.volley.toolbox.Volley;
 import com.example.tfg_application.BuildConfig;
 import com.example.tfg_application.R;
 import com.example.tfg_application.ui.dashboard.model.Event;
+import com.example.tfg_application.ui.notifications.NotificationsFragment;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+import ch.hsr.geohash.GeoHash;
+import io.reactivex.rxjava3.core.Scheduler;
 
 public class EventsRequester {
 
@@ -62,13 +75,32 @@ public class EventsRequester {
 
     private Location location;
     private String radius;
+    private String sorting;
     private String textFilter;
-    private String typeFilter;
     private String city;
     private String countryCode;
+    private String procedence;
+    private String typeFilter;
+    private Object o;
+    private Class classe;
+    private String method;
+
+    /*@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        moveTaskToBack(true);
+        super.onCreate(savedInstanceState);
+        Log.i(TAG, "did it");
+        arguments = getIntent().getExtras();
+        if(arguments!=null){Log.i(TAG,"arguments: "+ arguments.toString());}
+        Double[] myLocation = new Double[2];
+        try {
+            myLocation[0] = arguments.getDouble("latitude");
+            myLocation[1] = arguments.getDouble("longitude");
+        }catch (Exception e){e.printStackTrace();}
+    }*/
+
 
     public void getEvent(Context context){
-        Log.i(TAG, "EventsRequester location " + location);
         RequestQueue queue = Volley.newRequestQueue(context);
 
         //La url es cree a partir de la query passada
@@ -79,27 +111,42 @@ public class EventsRequester {
         //format per inclore paraula, localitzacio i radi
         //String query = String.format("apikey=%s&geoPoint=%s&keyword=%s&radius=%s", API_KEY, geoHash, keyword, 50);
         //        String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?latlong="+location.getLatitude()+","+location.getLongitude()+ "&radius=60&size=10&apikey=";
+
         if(textFilter!=null){
             url += "&keyword="+textFilter;
         }
-        if(city!=null)
-            url+= "&city="+city;
+
+        if(city!=null) url+= "&city="+city;
+        Log.i(TAG, "3");
         //Si hi ha medida "radius" es per filtrar
-        if(location!=null & radius!=null)
-            url+= "&latLong="+location.getLatitude()+","+ location.getLongitude()+ "&radius="+radius + "&unit=km";
+        Log.i(TAG, "going to check location : ");
+        if(location!=null & radius!=null) {
+            Log.i(TAG, "has location: " + location);
+            //obtens un geohash amb la precisió indicada segons el nombre de caracters.
+            // ticketmaster sol deixe 9 caràcters (12) es el màxim. Cuants més, més precís
+            GeoHash geohash = GeoHash.withCharacterPrecision(location.getLatitude(),
+                    location.getLongitude(), 9);
+            //Revisar: si no posem el radi es pose el predeterminat.
+            url += "&geoPoint=" + geohash.toBase32() + "&radius=" + radius + "&unit=km";
+            //url+= "&latLong="+location.getLatitude()+","+ location.getLongitude()+ "&radius="+radius + "&unit=km";
+        }
         if(city!=null){
             url+="&city="+city;
         }
         if(countryCode!=null){
             url+="&countryCode="+countryCode;
         }
+        //Ordenació per rellevància, distància o data
+        if(sorting==null)url+="&sort="+"relevance,desc";
+        else if(sorting.equals("distance") && location!=null) url+="&sort="+"distance,asc";
+        else if(sorting.equals("date")) url+="&sort="+"date,asc";
+        else url+="&sort="+"relevance,desc";
         Log.i(TAG, url);
         String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    //Log.i("events", "respuesta en string: " + response);
                     processEvent(response);
                 }
                 catch(Exception e){
@@ -123,8 +170,8 @@ public class EventsRequester {
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject embedded = jsonObject.getJSONObject("_embedded");
-            JSONObject page = jsonObject.getJSONObject("page");
             JSONArray events = embedded.getJSONArray("events");
+            JSONObject page = jsonObject.getJSONObject("page");
             mAllEvents = new Event[events.length()];
             for (int i = 0; i < events.length(); i++) {
                 JSONObject event = events.getJSONObject(i);
@@ -165,11 +212,10 @@ public class EventsRequester {
                     localTime = event.getJSONObject("dates").getJSONObject("start").getString("localTime");
                     //Log.i("events", "localDate: " + localDate);
                     //Log.i("events", "localTime: " + localTime);
+                    SimpleDateFormat formatoDestino = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     SimpleDateFormat formatoOrigen = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String fechaOriginal  = localDate +" " + localTime;
-                    SimpleDateFormat formatoDestino = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                     Date date = formatoOrigen.parse(fechaOriginal); //format Wed Jun 15 17:00:00 GMT 2022
-                    Log.i(TAG, "Date parsed: " + date);
                     mEventBuilder.setEventDate(date);
                 }catch (Exception e){ Log.i("events", "Error en la carga: " + e); }
                 try{
@@ -179,15 +225,15 @@ public class EventsRequester {
                     startDateTime = startDateTime.substring(0,5);
                     endDateTime = endDateTime.substring(11, 16);
                     String Date = event.getJSONObject("dates").getJSONObject("start").getString("localDate");
-                    Log.i("date", "Date: " + Date + ", start Time: " + startDateTime + ", end time: " + endDateTime);
+                    //Log.i("date", "Date: " + Date + ", start Time: " + startDateTime + ", end time: " + endDateTime);
                     SimpleDateFormat formatoAño = new SimpleDateFormat("yyyy-MM-dd");
                     SimpleDateFormat formatoAño2 = new SimpleDateFormat("dd-MM-yyyy");
-                    Log.i("date", "empieza");
+                    //Log.i("date", "empieza");
                     Date temp = formatoAño.parse(Date);
-                    Log.i("date", "any: "+formatoAño2.format(temp).toString()); //any2: 30-10-2022
+                    //Log.i("date", "any: "+formatoAño2.format(temp).toString()); //any2: 30-10-2022
                     //Log.i("date", "any3: "+formatoAño2.parse(formatoAño2.format(temp)));//any3: Thu Oct 27 00:00:00 GMT+02:00 2022
-                    Log.i("date", "hora inici: "+ startDateTime); //Thu Jan 01 10:30:00 GMT+01:00 1970
-                    Log.i("date", "hora final: "+endDateTime);
+                    //Log.i("date", "hora inici: "+ startDateTime); //Thu Jan 01 10:30:00 GMT+01:00 1970
+                    //Log.i("date", "hora final: "+endDateTime);
                     //mEventBuilder.setEventDate(date);
                     mEventBuilder.setShortDate(Date);
                     mEventBuilder.setStartDateTime(startDateTime);
@@ -197,7 +243,7 @@ public class EventsRequester {
                     JSONArray temp = event.getJSONObject("_embedded").getJSONArray("venues");
                     place = temp.getJSONObject(0).getJSONObject("address").getString("line1");
                     mEventBuilder.setEventPlace(place);
-                }catch (Exception e){Log.i(TAG, "Error en la carga: " + e);}
+                }catch (Exception e){e.printStackTrace();}
 
                 try{
                     //JSONObject temp = event.getJSONObject("_embedded").getJSONObject("priceRanges");
@@ -209,7 +255,7 @@ public class EventsRequester {
                     for(int j=0;j<temp.length();j++){
                         if(temp.getJSONObject(j).getString("type").equals("standard")){
                             foundPrice = true;
-                            Log.i(TAG, "IT FOUND STANDARD PRICE: ");
+                            //Log.i(TAG, "IT FOUND STANDARD PRICE: ");
                             String min = temp.getJSONObject(j).getString("min");
                             String max = temp.getJSONObject(j).getString("max");
                             String currency = temp.getJSONObject(j).getString("currency");
@@ -223,11 +269,11 @@ public class EventsRequester {
                             }
                         }
                     }}
-                    if(!foundPrice) mEventBuilder.setPrice("Check lick");
-                    Log.i(TAG, "AND IT DID NOT CRASH IT: ");
-                    Log.i(TAG, "TYPE: "+ temp.getJSONObject(0).getString("type"));
-                    Log.i(TAG, "PRICE: "+ temp.getJSONObject(0).getString("min") + " - " + temp.getJSONObject(0).getString("max"));
-                    Log.i(TAG, "INDEX 2: "+ temp.getString(0));
+                    if(!foundPrice) mEventBuilder.setPrice("Check link");
+                    //Log.i(TAG, "AND IT DID NOT CRASH IT: ");
+                    //Log.i(TAG, "TYPE: "+ temp.getJSONObject(0).getString("type"));
+                    //Log.i(TAG, "PRICE: "+ temp.getJSONObject(0).getString("min") + " - " + temp.getJSONObject(0).getString("max"));
+                    //Log.i(TAG, "INDEX 2: "+ temp.getString(0));
 
                 }catch (Exception e){Log.i("events", "Error en la carga: " + e);}
                 try{
@@ -239,6 +285,7 @@ public class EventsRequester {
                     mLocation.setLongitude(lol.getDouble("longitude"));
                     mLocation.setLatitude(lol.getDouble("latitude"));
                     location = mLocation;
+                    Log.i(TAG, "location obtained: " + mLocation.toString() );
                     //Log.i("events", "location Location: " + mLocation);
                     mEventBuilder.setEventLocation(location);
                 }catch (Exception e){Log.i(TAG, "Error en la carga: " + e);}
@@ -256,9 +303,9 @@ public class EventsRequester {
         //Llamar a EventAdapter
     }
 
-    public void setLocation(Location location){
-        this.location = location;
-    }
+    public void setLocation(Location location){this.location = location;}
+    public void setSorting(String sorting){this.sorting = sorting;}
+    public void setProcedence(String procedence){this.procedence = procedence;}
     public void setTextFilter(String text){
         this.textFilter = text;
     }
@@ -274,6 +321,11 @@ public class EventsRequester {
     public void setCountryCode(String countryCode){
         this.countryCode = countryCode;
     }
+    public void setMethodParams(Object o, Class classe, String method){
+        this.o=o;
+        this.classe=classe;
+        this.method=method;
+    }
 
     private void resetParameters(){
         this.location = null;
@@ -282,15 +334,48 @@ public class EventsRequester {
         this.radius = null;
         this.city = null;
         this.countryCode = null;
+        this.procedence = null;
+        this.o=null;
+        this.classe=null;
+        this.method=null;
     }
 
 
-    private void callEventAdapter(Event[] mAllEvents){
-        if(mAllEvents.length == 0){return;}
-        //Class df = DashboardFragment;
+    private void callEventAdapter(Event[] mAllEvents) {
+        Class classeTemp= classe;
+        String methodTemp= method;
+        Object oTemp= o;
+        String procedenceTemp = procedence;
         resetParameters();
+        Log.i(TAG, "callEventAdapter");
+
+        //Class df = DashboardFragment;
+        if(procedenceTemp.equals("map")) {
+            Log.i(TAG, "procedence from map");
+            List<Event> eventList = new ArrayList<>();
+            for(int i=0; i<mAllEvents.length; i++){
+                eventList.add(mAllEvents[i]);
+            }
+            try {
+                Class[] c = new Class[1];
+                c[0] = List.class;
+                Method method1 = classeTemp.getMethod(methodTemp, c);
+                method1.invoke(oTemp, eventList);
+            }catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e){
+                e.printStackTrace();
+            }
+        }
+        if(mAllEvents.length == 0){Log.i(TAG, "no events found");return;}
+
+        if(procedenceTemp.equals("events") || procedenceTemp.isEmpty() || procedenceTemp==null){
+            Log.i(TAG, "procedence from events or null");
+            DashboardFragment.changeEvents(mAllEvents);
+        }
+
+        Log.i(TAG, "arribe al final????");
+
         //classe.getMethod(method, c)
-        DashboardFragment.changeEvents(mAllEvents);
+
         //EventAdapter eventAdapter = new EventAdapter();
         //eventAdapter.setmAllEvents(mAllEvents);
 

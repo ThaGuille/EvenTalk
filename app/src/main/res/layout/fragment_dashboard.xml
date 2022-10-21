@@ -36,18 +36,19 @@
         android:id="@+id/text_search_events"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/text_ubication"
         android:layout_marginStart="8dp"
         android:layout_marginTop="3dp"
-        android:layout_below="@id/text_ubication"
         android:layout_marginEnd="8dp"
-        android:textSize="20sp"
+        android:background="@drawable/edit_text_shadow"
+        android:editable="true"
         android:focusableInTouchMode="true"
-        android:textIsSelectable="true"
-        android:hint="buscar evento"
+        android:hint="@string/events_search_event"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:editable="true"
-        />
+        android:padding="10dp"
+        android:textIsSelectable="true"
+        android:textSize="20sp" />
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,9 +80,10 @@
             android:layout_weight="1"
             android:textSize="18sp"
             android:textAlignment="center"
+            android:textColorHint="@color/black"
             android:clickable="true"
             android:focusable="true"
-            android:hint="Populares"/>
+            android:hint="@string/events_sort_popularity"/>
         <TextView
             android:id="@+id/order_by_distance"
             android:layout_width="0dp"
@@ -89,9 +91,10 @@
             android:layout_weight="1"
             android:textSize="18sp"
             android:textAlignment="center"
+            android:textColorHint="@color/black"
             android:clickable="true"
             android:focusable="true"
-            android:hint="Cercanía"/>
+            android:hint="@string/events_sort_proximity"/>
         <TextView
             android:id="@+id/order_by_recommended"
             android:layout_width="0dp"
@@ -99,9 +102,10 @@
             android:layout_weight="1"
             android:textSize="18sp"
             android:textAlignment="center"
+            android:textColorHint="@color/black"
             android:clickable="true"
             android:focusable="true"
-            android:hint="Recomendado"/>
+            android:hint="@string/events_sort_date"/>
     </LinearLayout>
 
     <!-- La linia horitzontal selectora.                                                 2hores.   JURO QUE EM VULL PEGAR UN TIRO AL PEU
@@ -151,6 +155,7 @@
         android:layout_below="@+id/layoutBaseFilters"
         android:layout_marginTop="5dp"
         android:background="@android:color/white" />
+
     <Space
         android:id="@+id/eventSpace"
         android:layout_width="match_parent"

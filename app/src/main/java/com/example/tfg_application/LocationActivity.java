@@ -22,10 +22,26 @@ import androidx.core.app.ActivityCompat;
 
 public class LocationActivity {
 
-    private Location mLastLocation;
+    //private Location mLastLocation;
+    private String TAG = "location";
+    private Double latitude;
+    private Double longitude;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Context context;
     private Activity mActivity;
+
+    /*public LocationActivity(@NonNull Context context, @NonNull WorkerParameters params) {
+        super(context, params);
+    }
+
+    @Override
+    public Result doWork() {
+
+        // Do the work here--in this case, upload the images.
+        // Indicate whether the work finished successfully with the Result
+        Log.i(TAG, "did it");
+        return Result.success();
+    }*/
 
     public LocationActivity(Context context, Activity activity){
         this.context = context;
@@ -37,38 +53,36 @@ public class LocationActivity {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Log.i("location", "Starting to get location");
+        Log.i(TAG, "Starting to get location");
         mFusedLocationProviderClient.getLastLocation()
                 .addOnCompleteListener(mActivity, new OnCompleteListener<Location>() {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
-                        Log.i("location", "location onComplete");
                         if (task.isSuccessful() && task.getResult() != null) {
-                            mLastLocation = task.getResult();
-                            /*Log.i("location", String.format(Locale.ENGLISH, "%s: %f", mLastLocation.getLatitude()));
-                            Log.i("location", String.format(Locale.ENGLISH, "%s: %f", mLastLocation.getLongitude()));*/
-                            Log.i("location", "LocationActivity query:"+ mLastLocation.toString());
-                            //return mLastLocation;
+                            Location temp = task.getResult();
                             try {
-                                Log.i("location", "nom classe: " + classe.getName());
-                                Class [] c = new Class[1];
-                                c[0] = Location.class;
+                                //c son els diferents tipus d'arguments que passarem al metode (focusCamera). En aquest cas dos doubles
+                                Class [] c = new Class[2];
+                                c[0] = Double.class;
+                                c[1] = Double.class;
                                 Method method1 = classe.getMethod(method, c);
-                                Log.i("location", "Invoking method :"+ method1.toString());
-                                Log.i("location", "And now last location is :"+mLastLocation);
+                                latitude = temp.getLatitude();
+                                longitude = temp.getLongitude();
+                                //No es pot passar amb un Double[2] perque android studio diu que no i punto (3h més tard)
+                                method1.invoke(o, latitude, longitude);
 
-                                method1.invoke(o, mLastLocation);
                             }catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e){
-                                Log.w("location", "method failed: " + e.toString());
+                                e.printStackTrace();
                             }
 
                         } else {
-                            Log.w("location", "location fail:" + task.getException());
-                            mLastLocation = task.getResult();
+                            Log.w(TAG, "location fail:" + task.getException());
+                            if(!task.isSuccessful()) Log.w(TAG, "not succesfull:");
+                            if(task.getResult()==null) Log.w(TAG, "result = null:");
                         }
                     }
                 });
-        Log.i("location", "llega hasta aqui?" + mLastLocation);
+
     }
 
 }

@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -43,7 +44,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private FirebaseDatabase db;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 99;
     //private MessageAdapter adapter;
     //private ActivityResultContracts.OpenDocument openDocument; comentat fins posar immatges
@@ -62,6 +62,32 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
             return;
+        }
+
+        if(getIntent().getExtras()!=null) {
+            try {
+                int intentFragment = getIntent().getExtras().getInt("fragment");
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.navigation_home, true)
+                        .build();
+                Bundle bundle = new Bundle();
+                switch (intentFragment) {
+                    case 3:
+                        Event event = (Event) getIntent().getExtras().getSerializable("event");
+                        bundle.putSerializable("event", event);
+                        Navigation.findNavController(findViewById(R.id.profile_layout)).navigate
+                                (R.id.action_navigation_home_to_navigation_map, bundle, navOptions);
+                        //Navigation.findNavController(v).clearBackStack(R.id.action_navigation_events_to_navigation_chat);
+                    case 4:
+                        bundle.putString("event", getIntent().getExtras().getString("id"));
+                        bundle.putString("name", getIntent().getExtras().getString("name"));
+                        Navigation.findNavController(findViewById(R.id.profile_layout)).navigate
+                                (R.id.action_navigation_home_to_navigation_chat, bundle, navOptions);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -98,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (!checkPermissions()) {
             requestPermissions();
-        } else {
-            //getLastLocation();
         }
     }
 
@@ -120,14 +144,14 @@ public class MainActivity extends AppCompatActivity {
         // request previously, but didn't check the "Don't ask again" checkbox.
         if (shouldProvideRationale) {
             Log.i("permission", "Displaying permission rationale to provide additional context.");
-            Snackbar.make(findViewById(android.R.id.content), "El permiso de ubicación es necesario para el correcto funcionamiento de la aplicación", Snackbar.LENGTH_LONG)
-                    .setAction("Give permission", new View.OnClickListener() {
+            Snackbar.make(findViewById(android.R.id.content), "El permiso de ubicación es " +
+                            "necesario para el correcto funcionamiento de la aplicación", Snackbar.LENGTH_LONG)
+                    .setAction("Dar permiso", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            // Request permission
                             startLocationPermissionRequest();
                         }
-                    });
+                    }).show();
 
         } else {
             Log.i("permission", "Requesting permission");
@@ -151,15 +175,14 @@ public class MainActivity extends AppCompatActivity {
         Log.i("permission", "onRequestPermissionResult");
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
+                Snackbar.make(findViewById(android.R.id.content), "Ha habido un error otorgando el permiso", Snackbar.LENGTH_LONG).show();
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
                 Log.i("permission", "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission granted.
-                //getLastLocation();
             } else {
                 // Permission denied.
-
                 // Notify the user via a SnackBar that they have rejected a core permission for the
                 // app, which makes the Activity useless. In a real app, core permissions would
                 // typically be best requested during a welcome-screen flow.
@@ -170,8 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 // when permissions are denied. Otherwise, your app could appear unresponsive to
                 // touches or interactions which have required permissions.
                 Snackbar.make(findViewById(android.R.id.content), "El permiso no se ha otorgado correctamente", Snackbar.LENGTH_LONG)
-                        .setAction("Give permission", new View.OnClickListener() {
-                //showSnackbar(R.string.permission_denied_explanation, R.string.settings,
+                        .setAction("Dar permiso", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 // Build intent that displays the App settings screen.
@@ -184,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                             }
-                        });
+                        }).show();
             }
         }
     }

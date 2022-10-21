@@ -15,6 +15,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.example.tfg_application.databinding.MessageBinding
 import com.example.tfg_application.databinding.ImageMessageBinding
 import com.example.tfg_application.ui.chat.ChatFragment.Companion.ANONYMOUS
+import com.example.tfg_application.ui.dashboard.EventAdapter
 //import com.google.firebase.codelab.friendlychat.MainActivity.Companion.ANONYMOUS
 
 
@@ -23,9 +24,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class MessageAdapter (
-    private val options: FirebaseRecyclerOptions<ChatMessage>,
-    private val currentUserName: String?
-        ) :
+    private val options: FirebaseRecyclerOptions<ChatMessage>, private val currentUserName: String?) :
     FirebaseRecyclerAdapter<ChatMessage, ViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,7 +38,6 @@ class MessageAdapter (
             val binding = ImageMessageBinding.bind(view)
             ImageMessageViewHolder(binding)
         }
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: ChatMessage) {
@@ -79,19 +77,22 @@ class MessageAdapter (
     }
     inner class ImageMessageViewHolder(private val binding: ImageMessageBinding) :
         ViewHolder(binding.root) {
-        fun bind(item: ChatMessage) {
-            loadImageIntoView(binding.messageImageView, item.imageUrl!!)
 
+        fun bind(item: ChatMessage) {
+            Log.i(TAG, "ImageMessageViewHolder")
+            loadImageIntoView(binding.messageImageView, item.imageUrl!!)
             binding.messengerTextView.text = if (item.name == null) ANONYMOUS else item.name
             if (item.photoUrl != null) {
                 loadImageIntoView(binding.messengerImageView, item.photoUrl!!)
             } else {
+                Log.i(EventAdapter.TAG, "null photo")
                 binding.messengerImageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
             }
         }
     }
 
     private fun loadImageIntoView(view: ImageView, url: String) {
+        Log.i(TAG, "loadImageIntoView")
         if (url.startsWith("gs://")) {
             val storageReference = Firebase.storage.getReferenceFromUrl(url)
             storageReference.downloadUrl
@@ -102,11 +103,7 @@ class MessageAdapter (
                         .into(view)
                 }
                 .addOnFailureListener { e ->
-                    Log.w(
-                        TAG,
-                        "Getting download url was not successful.",
-                        e
-                    )
+                    Log.w(TAG, "Getting download url was not successful.", e)
                 }
         } else {
             Glide.with(view.context).load(url).into(view)

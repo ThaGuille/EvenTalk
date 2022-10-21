@@ -35,7 +35,7 @@
         app:layout_constraintStart_toStartOf="@id/eventTextDate"
         app:layout_constraintTop_toBottomOf="@id/eventTextDate"
 
-        tools:text="Dirty martes en La Boite" />
+        tools:text="LleidaHack marató + sopar" />
     <TextView
         android:id="@+id/eventTextAdress"
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintStart_toStartOf="@id/eventTextName"
         app:layout_constraintBottom_toBottomOf="@id/eventButtonChat"
-        tools:text="C/ Sant Antoni nº15" />
+        tools:text="C/ Jaume III nº15" />
     <!--
     app:layout_constraintBaseline_toBottomOf="@id/eventButtonChat2"
     app:layout_constraintTop_toBottomOf="@id/eventTextName"

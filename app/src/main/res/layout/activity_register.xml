@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Register Form"
+        android:text="Registro"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
         android:textColor="#001AFF" />
 
@@ -23,7 +23,8 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Your Name"
+        android:layout_marginStart="5dp"
+        android:text="Nombre"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
+        android:layout_marginStart="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -39,7 +41,8 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nick Name"
+        android:layout_marginStart="5dp"
+        android:text="Apodo"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
@@ -47,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_marginStart="5dp"
         android:inputType="textPersonName"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -54,13 +58,15 @@
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email"
+        android:layout_marginStart="5dp"
+        android:text="Correo electrónico"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
         android:id="@+id/etRegisterEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -69,7 +75,8 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Password"
+        android:layout_marginStart="5dp"
+        android:text="Contraseña"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
@@ -77,6 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_marginStart="5dp"
         android:inputType="textPassword"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
     <Space
@@ -87,7 +95,7 @@
         android:id="@+id/btnVerifyEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Verify email"
+        android:text="Verificar email"
         android:visibility="gone"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
@@ -100,7 +108,7 @@
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Registrar"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
@@ -109,7 +117,8 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:linksClickable="true"
-        android:text="Login"
+        android:layout_marginEnd="5dp"
+        android:text="Iniciar sesión"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#052DF8" />
 

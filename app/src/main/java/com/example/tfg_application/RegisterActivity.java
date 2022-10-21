@@ -35,7 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() != null){
-            finish();
             return;
         }
         btnRegister = findViewById(R.id.btnRegister);
@@ -64,11 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            finish();
-            return;
+            showMainActivity();
         }
     }
 
@@ -93,13 +90,39 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(firstName)
+                                    //aquí es podrà guardar la foto de l'usuari en un futur
+                                    //.setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                                    .build();
+
+                            //Futurament útil
+                            firebaseUser.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d("User", "User profile updated.");
+                                            }
+                                        }
+                                    });
+                            firebaseUser.updateEmail(email);
+                            btnRegister.setVisibility(View.GONE);
+                            btnVerifyEmail.setVisibility(View.VISIBLE);
+
+
+                            //Sistema futur per guardar usuaris a la db. Sa de canviar la db references a com esta al chat
+                            /*Log.i("User", "proba0");
                             User user = new User(firstName, nickName, email);
                             FirebaseDatabase.getInstance().getReference("users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-
+                                    if(task.isSuccessful()){Log.i("User", "success");}
+                                    else Log.i("User", "fail");
+                                    Log.i("User", "proba1");
                                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                             .setDisplayName(firstName)
@@ -123,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                     //showMainActivity();
                                 }
-                            });
+                            });*/
                         } else {
                             Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                     Toast.LENGTH_LONG).show();
@@ -141,13 +164,12 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             // Re-enable button
-                            showMainActivity();
 
                             if (task.isSuccessful()) {
+                                showMainActivity();
                                 Toast.makeText(RegisterActivity.this,
                                         "Verification email sent to " + user.getEmail(),
                                         Toast.LENGTH_SHORT).show();
-                                Log.i("email", "Verification email sent to " + user.getEmail());
                             } else {
                                 Log.e("email", "sendEmailVerification", task.getException());
                                 Toast.makeText(RegisterActivity.this,
@@ -162,7 +184,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void showMainActivity() {
-        Log.i("registerToMainActivity", "registerToMainActivity");
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

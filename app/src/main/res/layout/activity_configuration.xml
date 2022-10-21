@@ -7,31 +7,12 @@
     tools:context="com.example.tfg_application.ui.home.tabs.Configuration"
     android:label="@string/title_home"
     >
-    <RelativeLayout
-        android:id="@+id/restaurant_top_card"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/arrow_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:background="?attr/selectableItemBackground"
-            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/textDeleteAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cerrar sesión de EvenTalk"
+        android:text="@string/Borrar_cuenta"
 
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

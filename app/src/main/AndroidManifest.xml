@@ -27,7 +27,7 @@
             android:label="Configuración"
             android:exported="true"/>
         <activity android:name=".ui.home.tabs.SavedEvents"
-            android:label="SavedEvents"
+            android:label="Eventos guardados"
             android:exported="true"/>
         <activity android:name=".ui.BigEvent"
             android:label="Event"

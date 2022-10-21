@@ -51,6 +51,7 @@ android {
 
 dependencies {
 
+
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -59,25 +60,30 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.4.2'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui:2.4.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.4.1'
 
 
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
     //Per obtenir imatges
     implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.6.0'
 
     // Google
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
+
+    //Per mostrar imatges rectangulars en un format circular
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-common-ktx:20.1.1'
+    implementation 'com.google.firebase:firebase-common-ktx:20.1.2'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
 
     // Firebase UI
     implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
@@ -87,20 +93,21 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.7.0'
 
-    //Request1s més senzilles
+    //Requests més senzilles
     implementation 'com.android.volley:volley:1.2.1'
+    //Obtenció del geoHash
     implementation 'ch.hsr:geohash:1.4.0'
+    //Obtenció de la nostra localització
     implementation 'com.google.android.gms:play-services-location:19.0.1'
-    //implementation 'com.android.tools.build:gradle:7.2.0'
+    //Tests
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4-alpha06'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
-
-    implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth'
-
     //Guardar objectes a sharedPrefs
     implementation 'com.google.code.gson:gson:2.9.1'
+
+    //Tasques en segon pla, substitut de IntentService
+    implementation "androidx.work:work-runtime:2.7.1"
 
 }

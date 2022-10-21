@@ -49,9 +49,14 @@ public class SignInActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         mAuth = FirebaseAuth.getInstance();
-        Log.i("SignIn", "SignIn");
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(com.firebase.ui.auth.R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        gsc = GoogleSignIn.getClient(this,gso);
+
         if (mAuth.getCurrentUser() != null) {
-            finish();
+            showMainActivity();
             return;
         }
 
@@ -86,11 +91,7 @@ public class SignInActivity  extends AppCompatActivity {
             }
         });
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(com.firebase.ui.auth.R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        gsc = GoogleSignIn.getClient(this,gso);
+
 
     }
 
@@ -99,14 +100,15 @@ public class SignInActivity  extends AppCompatActivity {
     private void signIn(){
         Intent signInIntent = gsc.getSignInIntent();
         someActivityResultLauncher.launch(signInIntent);
-        //registerForActivityResult(signInIntent);
     }
+
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
+                        Log.w("signin", "Google sign in");
                         // There are no request codes
                         Intent data = result.getData();
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -135,8 +137,8 @@ public class SignInActivity  extends AppCompatActivity {
                             showMainActivity();
                         }else{
                             Log.w("auth", "SignIn with Google failed:", task.getException());
-                            //Snackbar.make(SignInActivity.this, "Authentication failed", Snackbar.LENGTH_LONG);
-                            Toast.makeText(SignInActivity.this,"Authentication failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignInActivity.this,"Authentication failed",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -144,11 +146,10 @@ public class SignInActivity  extends AppCompatActivity {
 
     private void showRecoverPasswordDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle("Recover Password");
+        builder.setTitle("Recuperar contraseña");
+
         LinearLayout linearLayout=new LinearLayout(this);
         final EditText emailet= new EditText(this);
-
-        // write the email using which you registered
         emailet.setText("Email");
         emailet.setMinEms(16);
         emailet.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -157,7 +158,7 @@ public class SignInActivity  extends AppCompatActivity {
         builder.setView(linearLayout);
 
         // Click on Recover and a email will be sent to your registered email id
-        builder.setPositiveButton("Recover", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Recuperar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String email=emailet.getText().toString().trim();
@@ -165,7 +166,7 @@ public class SignInActivity  extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -189,12 +190,10 @@ public class SignInActivity  extends AppCompatActivity {
                 loadingBar.dismiss();
                 if(task.isSuccessful())
                 {
-                    // if isSuccessful then done message will be shown
-                    // and you can change the password
-                    Toast.makeText(SignInActivity.this,"Done sent",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignInActivity.this,"Message sent",Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(SignInActivity.this,"Error Occured",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignInActivity.this,"Error Occurred",Toast.LENGTH_LONG).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -225,6 +224,7 @@ public class SignInActivity  extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             showMainActivity();
                         } else {
+                            Log.e("error", task.getException().toString());
                             Toast.makeText(SignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }

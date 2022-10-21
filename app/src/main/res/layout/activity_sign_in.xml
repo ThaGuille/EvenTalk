@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Login Form"
+        android:text="Inicio de sesión"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
         android:textColor="#001AFF" />
 
@@ -27,7 +27,8 @@
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email"
+        android:text="Correo electrónico"
+        android:layout_marginStart="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
@@ -36,20 +37,22 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
+        android:layout_marginStart="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Password"
+        android:text="Contraseña"
+        android:layout_marginStart="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <EditText
         android:id="@+id/etLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:inputType="textPassword"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -60,7 +63,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/colorDarkGray"
-        android:text="Forgot password?"
+        android:text="¿Has olvidado la contraseña?"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Space
@@ -72,7 +75,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Iniciar sesión"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
@@ -81,7 +84,8 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:linksClickable="true"
-        android:text="Register"
+        android:text="Registrarse"
+        android:layout_marginEnd="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#0037FF" />
 
