@@ -58,6 +58,8 @@ public class LocationActivity {
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             Location location = task.getResult();
+
+                            //Spaguetti code (mentre es corregeix el BUG de la ultima versió de RecyclerView)
                             try {
                                 //c son els diferents tipus d'arguments que passarem al metode (focusCamera). En aquest cas dos doubles
                                 Class [] c = new Class[2];
