@@ -106,7 +106,7 @@
         android:layout_marginEnd="15dp"
         android:layout_toRightOf="@+id/locationImageView"
         android:singleLine="true"
-        android:text="miércoles, julio 13, 2022"
+        android:text="Miércoles, julio 13, 2022"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />
 

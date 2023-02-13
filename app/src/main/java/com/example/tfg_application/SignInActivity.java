@@ -41,6 +41,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SignInActivity  extends AppCompatActivity {
 
+    private String TAG = "SignIn";
     private FirebaseAuth mAuth;
     private GoogleSignInClient gsc;
     @Override
@@ -107,8 +108,10 @@ public class SignInActivity  extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+                    Log.i(TAG, "Google sign in starts with code " + result.getResultCode());
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Log.w("signin", "Google sign in");
+                        Log.i(TAG, "Google sign in goes well");
+                        Log.i(TAG, "Google sign in");
                         // There are no request codes
                         Intent data = result.getData();
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -120,6 +123,7 @@ public class SignInActivity  extends AppCompatActivity {
                         }
                         //doSomeOperations();
                     }
+                    Log.i(TAG, "Google sign in ends");
                 }
             });
 

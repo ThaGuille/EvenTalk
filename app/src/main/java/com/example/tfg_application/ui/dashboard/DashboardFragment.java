@@ -155,7 +155,7 @@ public class DashboardFragment extends Fragment {
         });
 
 
-        //Sistema de queries a la API. Cambiarà bastant un cop s'apliquin els filtres així que de moment està bé així
+        //Sistema de queries a la API
 
         EditText buscador = binding.textSearchEvents;
         buscador.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -165,18 +165,8 @@ public class DashboardFragment extends Fragment {
 
                     Context context = getContext();
                     Object o2 = (Object)  DashboardFragment.this;
-                    //I això es farà amb aquest mètode, però de moment per fer probes no cal (pero ja funciona)
-                    /*
-                    * if tenim permisos de localització (suposo que tmb es pot cridar directament i comprovar-ho allí, depenent del resultat), el sistema actual i return
-                    * else, cridar al eventsRequester desde aquí sense la localització
-                    * */
 
-                    /*if(requestPermission()) {
-                        Log.i(TAG, "location permission passed");
-                        //eventsRequester.setCountryCode("ES");
-                        locationActivity.lastLocation(o2, DashboardFragment.class, "getLocation");
-                        return true;
-                    }*/
+                    //if(requestPermission()) {}
                     setBasicFilters();
                     eventsRequester.getEvent(getContext());
                     //eventsRequester.getEvent(buscador.getText().toString(), context, mLastLocation);
@@ -234,7 +224,7 @@ public class DashboardFragment extends Fragment {
         v.setLayoutParams(param1);
     }
 
-    //Enlloc de tantes coses estatiquees tmb es podrie fer adapter.registerAdapterDataObserver(classe(adapter, eventsRequester))
+    //Enlloc de tantes coses estatiques tmb es podrie fer adapter.registerAdapterDataObserver(classe(adapter, eventsRequester))
     //I en aquella classe fer les operacions, agafant els events de la propia classe eventsRequester
     public static void changeEvents(Event[] events){
         List<Event> eventList = Arrays.asList(events);

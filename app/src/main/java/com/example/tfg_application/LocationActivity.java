@@ -7,10 +7,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.util.Log;
 
-import com.example.tfg_application.ui.notifications.NotificationsFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -59,26 +57,22 @@ public class LocationActivity {
                     @Override
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
-                            Location temp = task.getResult();
+                            Location location = task.getResult();
                             try {
                                 //c son els diferents tipus d'arguments que passarem al metode (focusCamera). En aquest cas dos doubles
                                 Class [] c = new Class[2];
                                 c[0] = Double.class;
                                 c[1] = Double.class;
                                 Method method1 = classe.getMethod(method, c);
-                                latitude = temp.getLatitude();
-                                longitude = temp.getLongitude();
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
                                 //No es pot passar amb un Double[2] perque android studio diu que no i punto (3h més tard)
                                 method1.invoke(o, latitude, longitude);
-
                             }catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e){
                                 e.printStackTrace();
                             }
-
                         } else {
                             Log.w(TAG, "location fail:" + task.getException());
-                            if(!task.isSuccessful()) Log.w(TAG, "not succesfull:");
-                            if(task.getResult()==null) Log.w(TAG, "result = null:");
                         }
                     }
                 });

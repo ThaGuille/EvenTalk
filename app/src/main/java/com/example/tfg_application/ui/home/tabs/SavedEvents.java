@@ -45,7 +45,8 @@ public class SavedEvents  extends AppCompatActivity {
         adapter = new EventAdapter(mEventList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        sharedPref = getSharedPreferences("com.example.tfg_application.saved_events", Context.MODE_PRIVATE);
+        sharedPref = getSharedPreferences("com.example.tfg_application.saved_events",
+                Context.MODE_PRIVATE);
         editor = sharedPref.edit();
         mEventList.clear();
 

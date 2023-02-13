@@ -1,6 +1,5 @@
 package com.example.tfg_application.ui.dashboard
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,23 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.view.menu.MenuView
 import androidx.core.content.ContextCompat.startActivity
-import androidx.core.view.get
-import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.tfg_application.MainActivity
 import com.example.tfg_application.R
 import com.example.tfg_application.databinding.SmallEventBinding
 import com.example.tfg_application.ui.BigEvent
-import com.example.tfg_application.ui.chat.ChatFragment
 import com.example.tfg_application.ui.dashboard.model.Event
-import com.example.tfg_application.ui.notifications.NotificationsFragment
 import java.lang.Exception
 
 class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
@@ -77,9 +69,8 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
             //setTextColor(item.name, binding.messageTextView)
         }
 
-        //Ens envie a la pantalla del mapa passant sol les variables que requerirem allí
+        //Ens envie a la pantalla del mapa passant sol les variables que requerim allí
         private fun goToMap(event: Event){
-            //Log.i(TAG, "map button clicked: $location")
             val navOptions: NavOptions = NavOptions.Builder()
                 .setPopUpTo(R.id.navigation_events, true)
                 .build()
@@ -105,7 +96,7 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
         //------------------O millor crear una classe/metode a part a la que li passis id event + info i faci el treball
         //------------------Igual tot serie més senzill amb un JSON i anarlo passant -----------------------------
         private fun saveEvent(event: Event){
-            Log.i(TAG, "save button clicked: ${event.name}")
+            Log.i(TAG, "save butto n clicked: ${event.name}")
             Log.i(TAG, "date: ${event.date}")
             Log.i(TAG, "startDayTime: ${event.startDateTime}")
             Log.i(TAG, "endDayTime: ${event.endDateTime}")
@@ -162,7 +153,7 @@ class EventAdapter (private val mAllEvents: List<Event>) : RecyclerView.Adapter<
             return ViewHolder(binding)
     }
 
-    //Aquest mètode es crida cada cop que es mostra per pantalla una nova view,
+    //Aquest mètode es crida cada cop que es mostra per pantalla una nova view
     // amb la seva posició. Serveix per establir les dades
     // Per tant hem d'obtenir l'event a partir de la posicio o crear un RecyclerAdapter personalitzat que ho faci automaticament com ho fa el de firebase.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

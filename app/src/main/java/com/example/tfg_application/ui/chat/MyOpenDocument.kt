@@ -6,7 +6,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 
 class MyOpenDocument : ActivityResultContracts.OpenDocument() {
 
-    override fun createIntent(context: Context, input: Array<out String>): Intent {
+    // Corregit error input: Array<out String> per canvi de versió, revisar
+    override fun createIntent(context: Context, input: Array<String>): Intent {
         val intent = super.createIntent(context, input)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
 
