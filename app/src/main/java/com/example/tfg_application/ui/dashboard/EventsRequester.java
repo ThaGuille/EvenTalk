@@ -1,52 +1,32 @@
 package com.example.tfg_application.ui.dashboard;
 
-import android.app.Activity;
-import android.app.IntentService;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 //import ch.hsr.geohash.GeoHash;
 
 import com.example.tfg_application.BuildConfig;
-import com.example.tfg_application.R;
 import com.example.tfg_application.ui.dashboard.model.Event;
-import com.example.tfg_application.ui.notifications.NotificationsFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONException;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
 import ch.hsr.geohash.GeoHash;
-import io.reactivex.rxjava3.core.Scheduler;
 
 public class EventsRequester {
 
@@ -139,7 +119,10 @@ public class EventsRequester {
         //Ordenació per rellevància, distància o data
         if(sorting==null)url+="&sort="+"relevance,desc";
         else if(sorting.equals("distance") && location!=null) url+="&sort="+"distance,asc";
-        else if(sorting.equals("date")) url+="&sort="+"date,asc";
+        else if(sorting.equals("date")) {
+            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            url+="&sort="+"date,asc"+"&startDateTime="+date+"T00:00:00Z";  //date;
+        }
         else url+="&sort="+"relevance,desc";
         Log.i(TAG, url);
         String urlLocation = "https://app.ticketmaster.com/discovery/v2/events.json?countryCode=ES&apikey=";

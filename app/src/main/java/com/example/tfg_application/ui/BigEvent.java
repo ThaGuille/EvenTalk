@@ -94,21 +94,27 @@ public class BigEvent extends AppCompatActivity {
             binding.priceImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.url));
-                    startActivity(browserIntent);
+                    goToEventPage();
+                  //  Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.url));
+                  //  startActivity(browserIntent);
                 }
             });
             binding.priceTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.url));
-                    startActivity(browserIntent);
+                    goToEventPage();
+                   // Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.url));
+                   // startActivity(browserIntent);
                 }
             });
 
         }
     }
 
+    private void goToEventPage(){
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(event.url));
+        startActivity(browserIntent);
+    }
     private void setPageView(Bundle event){}
 
     private void loadImages(){

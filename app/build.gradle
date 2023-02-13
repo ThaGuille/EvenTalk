@@ -11,18 +11,29 @@ def localProperties = new Properties()
 localProperties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
-    compileSdk 32
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\yonki\\OneDrive\\Documents\\Deures\\4rt_gei\\TFG\\Almacen_de_claves\\upload-keystore.jks')
+            storePassword '6202_guiA'
+            keyAlias 'key0'
+            keyPassword '6202_guiA'
+        }
+    }
+    compileSdk 33
 
 
     defaultConfig {
         applicationId "com.example.tfg_application"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        //multiDexEnabled true
+        signingConfig signingConfigs.debug
+        //necessari el multidex, pero done molts fallos. Classic Android Studio
+        multiDexEnabled true
+
     }
 
     buildTypes {
@@ -31,17 +42,21 @@ android {
             Properties properties = new Properties()
             properties.load(project.rootProject.file('local.properties').newDataInputStream())
             manifestPlaceholders = [MAPS_API_KEY: "${properties.getProperty('MAPS_API_KEY')}"]
-
+            //applicationIdSuffix ".debug"
+            debuggable true
+            signingConfig null
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "ticketmaster_api", "\"" + localProperties['ticketmasterKey'] + "\"")
+            manifestPlaceholders = [MAPS_API_KEY: "${localProperties.getProperty('MAPS_API_KEY')}"]
 
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     buildFeatures {
         viewBinding true
@@ -52,7 +67,7 @@ android {
 dependencies {
 
 
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
@@ -70,8 +85,8 @@ dependencies {
     implementation 'androidx.media:media:1.6.0'
 
     // Google
-    implementation 'com.google.android.gms:play-services-maps:18.0.2'
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
     //Per mostrar imatges rectangulars en un format circular
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -80,14 +95,15 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.0.1')
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-common-ktx:20.1.2'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-common-ktx:20.3.0'
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth'
+
 
     // Firebase UI
-    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
-    implementation 'com.firebaseui:firebase-ui-database:8.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
+    implementation 'com.firebaseui:firebase-ui-database:8.0.2'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -98,7 +114,7 @@ dependencies {
     //Obtenció del geoHash
     implementation 'ch.hsr:geohash:1.4.0'
     //Obtenció de la nostra localització
-    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
     //Tests
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4-alpha06'

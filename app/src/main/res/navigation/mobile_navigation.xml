@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/navigation_map"
-        android:name="com.example.tfg_application.ui.notifications.NotificationsFragment"
+        android:name="com.example.tfg_application.ui.map.MapFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_notifications" />
 

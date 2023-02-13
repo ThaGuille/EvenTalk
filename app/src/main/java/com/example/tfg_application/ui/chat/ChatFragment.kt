@@ -93,7 +93,7 @@ class ChatFragment : Fragment(){
             openDocument.launch(arrayOf("image/*"))
         }
 
-        return binding!!.root
+        return binding.root
     }
 
 
